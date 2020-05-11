@@ -48,8 +48,14 @@ const Login = () => {
 			<div>
 				<h1>Login to Start Planning</h1>
 				<form onSubmit={handleSubmit}>
-					<input type="text" placeholder="Email" value={email} onChange={updateEmail} />
-					<input type="password" placeholder="Password" value={password} onChange={updatePassword} />
+					<input className="login" type="email" placeholder="Email" value={email} onChange={updateEmail} />
+					<input
+						className="login"
+						type="password"
+						placeholder="Password"
+						value={password}
+						onChange={updatePassword}
+					/>
 					<button className="btn btn-primary" type="submit">
 						Login
 					</button>
