@@ -1,1 +1,33 @@
 /* TODO Add site wide styles */
+main {
+	bottom: 0;
+	display: flex;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+form {
+	flex: 0 0 400px;
+}
+
+input {
+	border: 0;
+	border-bottom: 2px solid #ccc;
+	box-sizing: border-box;
+	display: block;
+	margin-bottom: 2em;
+	outline: 0;
+	padding: .25em .5em;
+	width: 100%;
+}
+
+input:focus {
+	border-bottom-color: blueviolet;
+}
+
+.center.middle {
+	justify-content: center;
+	align-items: center;
+}
