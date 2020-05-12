@@ -8,10 +8,6 @@ form {
 	flex: 0 0 400px;
 }
 
-body {
-	background-color: antiquewhite;
-}
-
 input.login {
 	border: 0;
 	border-bottom: 2px solid #ccc;
