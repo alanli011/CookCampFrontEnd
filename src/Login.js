@@ -47,22 +47,30 @@ const Login = () => {
 	}
 
 	return (
-		<main className="center middle">
-			<div>
-				<h1>Login to Start Planning</h1>
-				<form onSubmit={handleSubmit}>
-					<input className="login" type="email" placeholder="Email" value={email} onChange={updateEmail} />
-					<input
-						className="login"
-						type="password"
-						placeholder="Password"
-						value={password}
-						onChange={updatePassword}
-					/>
-					<button className="btn btn-primary" type="submit">
-						Login
-					</button>
-				</form>
+		<main>
+			<div className="login-panel center middle">
+				<div>
+					<h1>Login to Start Planning</h1>
+					<form onSubmit={handleSubmit}>
+						<input
+							className="login"
+							type="email"
+							placeholder="Email"
+							value={email}
+							onChange={updateEmail}
+						/>
+						<input
+							className="login"
+							type="password"
+							placeholder="Password"
+							value={password}
+							onChange={updatePassword}
+						/>
+						<button className="btn btn-primary" type="submit">
+							Login
+						</button>
+					</form>
+				</div>
 			</div>
 		</main>
 	);

@@ -1,15 +1,15 @@
 /* TODO Add site wide styles */
 main {
-	bottom: 0;
-	display: flex;
-	left: 0;
-	position: absolute;
-	right: 0;
-	top: 0;
+	width: 100vw;
+	min-height: 100vh;
 }
 
 form {
 	flex: 0 0 400px;
+}
+
+body {
+	background-color: antiquewhite;
 }
 
 input.login {
@@ -21,10 +21,18 @@ input.login {
 	outline: 0;
 	padding: .25em .5em;
 	width: 100%;
+	background-color: antiquewhite;
 }
 
 input:focus {
 	border-bottom-color: blueviolet;
+}
+
+.login-panel {
+	display: flex;
+	width: 100vw;
+	min-height: 100vh;
+	flex-direction: column;
 }
 
 .center.middle {
@@ -34,4 +42,9 @@ input:focus {
 
 .width {
 	width: 100%;
+}
+
+.main-navigation {
+	display: flex;
+	margin: 0 10px;
 }

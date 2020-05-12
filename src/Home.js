@@ -1,7 +1,11 @@
 import React from 'react';
 
 const Home = () => {
-	return <h1>CookCamp Home Screen</h1>;
+	return (
+		<React.Fragment>
+			<h1>CookCamp Home Screen</h1>
+		</React.Fragment>
+	);
 };
 
 export default Home;
