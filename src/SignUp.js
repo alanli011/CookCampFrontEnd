@@ -4,7 +4,7 @@ import { baseUrl } from './config';
 import CookContext from './CookContext';
 
 const SignUp = () => {
-	const { login } = useContext(CookContext);
+	const { login, authToken } = useContext(CookContext);
 	const [ userName, setUserName ] = useState('');
 	const [ firstName, setFirstName ] = useState('');
 	const [ lastName, setlastName ] = useState('');
@@ -29,10 +29,8 @@ const SignUp = () => {
 			}
 
 			const { token, user: { id } } = await res.json();
-
-			window.localStorage.setItem('state-cookcamp-id', id);
 			setLoggedIn(true);
-			login(token);
+			login(token, id);
 		} catch (err) {
 			console.error(err);
 		}
@@ -59,6 +57,10 @@ const SignUp = () => {
 	};
 
 	if (loggedIn) {
+		return <Redirect to="/" />;
+	}
+
+	if (authToken) {
 		return <Redirect to="/" />;
 	}
 
