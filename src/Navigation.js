@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, Redirect } from 'react-router-dom';
 import CookContext from './CookContext';
 
 import { makeStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -14,7 +15,9 @@ import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		flexGrow: 1
+		flexGrow: 1,
+		display: 'flex',
+		alignItems: 'center'
 	},
 	title: {
 		flexGrow: 1
@@ -24,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
 		textDecoration: 'none'
 	},
 	ToolBar: {
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
+		alignItems: 'center'
 	},
 	home: {
 		color: 'black',
@@ -34,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Navigation = () => {
-	const { authToken } = useContext(CookContext);
+	const { authToken, logout } = useContext(CookContext);
 	const [ auth, setAuth ] = useState(false);
 	const [ anchorEl, setAnchorEl ] = useState(null);
 	const open = Boolean(anchorEl);
@@ -49,9 +53,9 @@ const Navigation = () => {
 	};
 
 	const handleLogOut = () => {
-		window.localStorage.removeItem('state-cookcamp-token');
-		window.localStorage.removeItem('state-cookcamp-id');
 		setAuth(false);
+		setAnchorEl(null);
+		return <Redirect to="/" />;
 	};
 
 	useEffect(
@@ -59,18 +63,25 @@ const Navigation = () => {
 			if (authToken) {
 				setAuth(true);
 			}
+			logout();
 		},
-		[ authToken ]
+		[ authToken, logout ]
 	);
 
 	return (
 		<div className={classes.root}>
+			<CssBaseline />
 			<AppBar color="inherit" position="static">
 				<Toolbar className={classes.ToolBar}>
-					<Typography variant="h6">CookCamp</Typography>
-					<Link className={classes.home} to="/">
-						Home
-					</Link>
+					<Button href="/">
+						<Typography variant="h6">CookCamp</Typography>
+					</Button>
+					{auth && (
+						<Link className={classes.home} to="/">
+							Home
+						</Link>
+					)}
+
 					{auth ? (
 						<div>
 							<IconButton

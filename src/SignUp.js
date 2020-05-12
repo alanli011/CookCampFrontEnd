@@ -1,11 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { baseUrl } from './config';
 import CookContext from './CookContext';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -40,6 +39,10 @@ const SignUp = () => {
 	const [ lastName, setlastName ] = useState('');
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
+
+	useEffect(() => {
+		document.title = 'CookCamp - Sign Up';
+	}, []);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -91,7 +94,6 @@ const SignUp = () => {
 
 	return (
 		<Container component="main" maxWidth="xs">
-			<CssBaseline />
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>
 					<LockOutlinedIcon />
@@ -101,19 +103,6 @@ const SignUp = () => {
 				</Typography>
 				<form className={classes.form} noValidate onSubmit={handleSubmit}>
 					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="userName"
-								label="Usename"
-								name="userName"
-								autoComplete="userName"
-								value={userName}
-								onChange={updateUserName}
-							/>
-						</Grid>
 						<Grid item xs={12} sm={6}>
 							<TextField
 								autoComplete="fname"
@@ -139,6 +128,19 @@ const SignUp = () => {
 								autoComplete="lname"
 								value={lastName}
 								onChange={updateLastName}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								variant="outlined"
+								required
+								fullWidth
+								id="userName"
+								label="Usename"
+								name="userName"
+								autoComplete="userName"
+								value={userName}
+								onChange={updateUserName}
 							/>
 						</Grid>
 						<Grid item xs={12}>

@@ -1,11 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { baseUrl } from './config';
 import CookContext from './CookContext';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -38,6 +37,10 @@ const Login = () => {
 	const [ email, setEmail ] = useState('demoUser@demo.com');
 	const [ password, setPassword ] = useState('cooking');
 
+	useEffect(() => {
+		document.title = 'CookCamp - Login';
+	}, []);
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
@@ -68,13 +71,13 @@ const Login = () => {
 
 	const classes = useStyles();
 
+	console.log(authToken);
 	if (authToken) {
 		return <Redirect to="/" />;
 	}
 
 	return (
 		<Container component="main" maxWidth="xs">
-			<CssBaseline />
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>
 					<LockOutlinedIcon />

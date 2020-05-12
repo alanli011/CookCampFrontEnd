@@ -19,8 +19,16 @@ const AppWithContext = () => {
 		setNeedLogin(false);
 	};
 
+	const logout = () => {
+		window.localStorage.removeItem('state-cookcamp-token');
+		window.localStorage.removeItem('state-cookcamp-id');
+		setAuthToken(localStorageToken);
+		setAuthId(localStorageTokenId);
+		setNeedLogin(true);
+	};
+
 	return (
-		<CookContext.Provider value={{ authToken, authId, needLogin, login }}>
+		<CookContext.Provider value={{ authToken, authId, needLogin, login, logout }}>
 			<App />
 		</CookContext.Provider>
 	);
