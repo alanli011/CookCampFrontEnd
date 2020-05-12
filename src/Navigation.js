@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Navigation = () => {
-	const { authToken, logout } = useContext(CookContext);
+	const { authToken, logout, user } = useContext(CookContext);
 	const [ auth, setAuth ] = useState(false);
 	const [ anchorEl, setAnchorEl ] = useState(null);
 	const open = Boolean(anchorEl);
@@ -62,8 +62,9 @@ const Navigation = () => {
 		() => {
 			if (authToken) {
 				setAuth(true);
+			} else {
+				logout();
 			}
-			logout();
 		},
 		[ authToken, logout ]
 	);
@@ -84,6 +85,7 @@ const Navigation = () => {
 
 					{auth ? (
 						<div>
+							{user.userName}
 							<IconButton
 								aria-label="account of current user"
 								aria-controls="menu-appbar"
