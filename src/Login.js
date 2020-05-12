@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { baseUrl } from './config';
 import CookContext from './CookContext';
 
@@ -7,8 +7,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-// import Link from '@material-ui/core/Link';
-// import Grid from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid';
 // import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -81,32 +80,6 @@ const Login = () => {
 	}
 
 	return (
-		// <main>
-		// 	<div className="login-panel center middle">
-		// 		<div>
-		// 			<h1>Login to Start Planning</h1>
-		// 			<form onSubmit={handleSubmit}>
-		// 				<input
-		// 					className="login"
-		// 					type="email"
-		// 					placeholder="Email"
-		// 					value={email}
-		// 					onChange={updateEmail}
-		// 				/>
-		// 				<input
-		// 					className="login"
-		// 					type="password"
-		// 					placeholder="Password"
-		// 					value={password}
-		// 					onChange={updatePassword}
-		// 				/>
-		// 				<Button variant="contained" color="primary" type="submit">
-		// 					Login
-		// 				</Button>
-		// 			</form>
-		// 		</div>
-		// 	</div>
-		// </main>
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
 			<div className={classes.paper}>
@@ -146,6 +119,13 @@ const Login = () => {
 					<Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
 						Sign In
 					</Button>
+					<Grid container justify="flex-end">
+						<Grid item>
+							<Link to="/signup" variant="body2">
+								Don't have an account? Sign Up!
+							</Link>
+						</Grid>
+					</Grid>
 				</form>
 			</div>
 		</Container>
