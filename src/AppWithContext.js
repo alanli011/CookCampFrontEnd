@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import App from './App';
 import CookContext from './CookContext';
 import { baseUrl } from './config';
@@ -9,6 +9,7 @@ const AppWithContext = () => {
 
 	const [ authToken, setAuthToken ] = useState(localStorageToken);
 	const [ authId, setAuthId ] = useState(localStorageTokenId);
+	const [ user, setUser ] = useState('');
 	const [ needLogin, setNeedLogin ] = useState(!!localStorageToken);
 
 	const login = (token, id) => {
@@ -22,13 +23,36 @@ const AppWithContext = () => {
 	const logout = () => {
 		window.localStorage.removeItem('state-cookcamp-token');
 		window.localStorage.removeItem('state-cookcamp-id');
-		setAuthToken(localStorageToken);
-		setAuthId(localStorageTokenId);
+		setAuthToken(null);
+		setAuthId(null);
 		setNeedLogin(true);
 	};
 
+	useEffect(
+		() => {
+			if (authId) {
+				const getUser = async () => {
+					const res = await fetch(`${baseUrl}/users/${authId}`, {
+						headers: {
+							Authorization: `Bearer ${authToken}`
+						}
+					});
+
+					if (!res.ok) {
+						throw res;
+					}
+
+					const { user } = await res.json();
+					setUser(user);
+				};
+				getUser();
+			}
+		},
+		[ authToken, authId ]
+	);
+
 	return (
-		<CookContext.Provider value={{ authToken, authId, needLogin, login, logout }}>
+		<CookContext.Provider value={{ authToken, authId, needLogin, login, logout, user }}>
 			<App />
 		</CookContext.Provider>
 	);
