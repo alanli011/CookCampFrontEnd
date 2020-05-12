@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Navigation from './Navigation';
 import Login from './Login';
 import Home from './Home';
 import SignUp from './SignUp';
@@ -7,6 +8,7 @@ import SignUp from './SignUp';
 const App = (props) => {
 	return (
 		<BrowserRouter>
+			<Navigation />
 			<Switch>
 				<Route path="/signup" component={SignUp} />
 				<Route path="/login" component={Login} />
