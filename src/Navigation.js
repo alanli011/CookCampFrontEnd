@@ -53,6 +53,7 @@ const Navigation = () => {
 	};
 
 	const handleLogOut = () => {
+		logout();
 		setAuth(false);
 		setAnchorEl(null);
 		return <Redirect to="/" />;
@@ -62,8 +63,6 @@ const Navigation = () => {
 		() => {
 			if (authToken) {
 				setAuth(true);
-			} else {
-				logout();
 			}
 		},
 		[ authToken, logout ]

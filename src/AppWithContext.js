@@ -23,8 +23,8 @@ const AppWithContext = () => {
 	const logout = () => {
 		window.localStorage.removeItem('state-cookcamp-token');
 		window.localStorage.removeItem('state-cookcamp-id');
-		setAuthToken(localStorageToken);
-		setAuthId(localStorageTokenId);
+		setAuthToken(null);
+		setAuthId(null);
 		setNeedLogin(true);
 	};
 
