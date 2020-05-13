@@ -71,9 +71,8 @@ const Login = () => {
 
 	const classes = useStyles();
 
-	console.log(authToken);
 	if (authToken) {
-		return <Redirect to="/" />;
+		return <Redirect to="/projects" />;
 	}
 
 	return (

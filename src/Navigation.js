@@ -81,7 +81,7 @@ const Navigation = () => {
 						<Typography variant="h6">CookCamp</Typography>
 					</Button>
 					{auth && (
-						<Link className={classes.home} to="/">
+						<Link className={classes.home} to="/projects">
 							<HomeIcon />
 							<div>Home</div>
 						</Link>

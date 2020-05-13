@@ -10,6 +10,7 @@ const AppWithContext = () => {
 	const [ authToken, setAuthToken ] = useState(localStorageToken);
 	const [ authId, setAuthId ] = useState(localStorageTokenId);
 	const [ user, setUser ] = useState('');
+	const [ projects, setProjects ] = useState([]);
 	const [ needLogin, setNeedLogin ] = useState(!!localStorageToken);
 
 	const login = (token, id) => {
@@ -26,6 +27,20 @@ const AppWithContext = () => {
 		setAuthToken(null);
 		setAuthId(null);
 		setNeedLogin(true);
+	};
+
+	const loadProjects = async () => {
+		const res = await fetch(`${baseUrl}/projects`, {
+			headers: {
+				Authorization: `Bearer ${authToken}`
+			}
+		});
+		if (!res.ok) {
+			throw res;
+		}
+
+		const { projects } = await res.json();
+		setProjects(projects);
 	};
 
 	useEffect(
@@ -52,7 +67,7 @@ const AppWithContext = () => {
 	);
 
 	return (
-		<CookContext.Provider value={{ authToken, authId, needLogin, login, logout, user }}>
+		<CookContext.Provider value={{ authToken, authId, needLogin, login, logout, user, projects, loadProjects }}>
 			<App />
 		</CookContext.Provider>
 	);

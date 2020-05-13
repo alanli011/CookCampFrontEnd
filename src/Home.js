@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
-
+import React, { useEffect, useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import CookContext from './CookContext';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -26,12 +27,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Home = () => {
+	const { authToken } = useContext(CookContext);
 	useEffect(() => {
 		document.title = 'CookCamp - Home';
 	}, []);
 
 	const classes = useStyles();
-
+	if (authToken) {
+		return <Redirect to="/projects" />;
+	}
 	return (
 		<Container component="main">
 			<div className={classes.paper}>
