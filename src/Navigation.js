@@ -9,6 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import HomeIcon from '@material-ui/icons/Home';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
@@ -33,7 +34,10 @@ const useStyles = makeStyles((theme) => ({
 	home: {
 		color: 'black',
 		textDecoration: 'none',
-		cursor: 'pointer'
+		cursor: 'pointer',
+		display: 'flex',
+		flexDirection: 'row',
+		alignItems: 'center'
 	}
 }));
 
@@ -77,8 +81,9 @@ const Navigation = () => {
 						<Typography variant="h6">CookCamp</Typography>
 					</Button>
 					{auth && (
-						<Link className={classes.home} to="/">
-							Home
+						<Link className={classes.home} to="/projects">
+							<HomeIcon />
+							<div>Home</div>
 						</Link>
 					)}
 

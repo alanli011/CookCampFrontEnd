@@ -89,7 +89,7 @@ const SignUp = () => {
 	const classes = useStyles();
 
 	if (authToken) {
-		return <Redirect to="/" />;
+		return <Redirect to="/projects" />;
 	}
 
 	return (
