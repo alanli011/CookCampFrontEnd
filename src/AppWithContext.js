@@ -16,32 +16,49 @@ const AppWithContext = () => {
 	const login = (token, id) => {
 		window.localStorage.setItem('state-cookcamp-token', token);
 		window.localStorage.setItem('state-cookcamp-id', id);
+		setNeedLogin(false);
 		setAuthToken(token);
 		setAuthId(id);
-		setNeedLogin(false);
 	};
 
 	const logout = () => {
 		window.localStorage.removeItem('state-cookcamp-token');
 		window.localStorage.removeItem('state-cookcamp-id');
+		setNeedLogin(true);
 		setAuthToken(null);
 		setAuthId(null);
-		setNeedLogin(true);
 	};
 
 	const loadProjects = async () => {
-		const res = await fetch(`${baseUrl}/projects`, {
-			headers: {
-				Authorization: `Bearer ${authToken}`
+		try {
+			if (!authId) return;
+			const res = await fetch(`${baseUrl}/users/${authId}/projects`, {
+				headers: {
+					Authorization: `Bearer ${authToken}`
+				}
+			});
+			if (!res.ok) {
+				throw res;
 			}
-		});
-		if (!res.ok) {
-			throw res;
-		}
 
-		const { projects } = await res.json();
-		setProjects(projects);
+			const { projects } = await res.json();
+			console.log(projects);
+			setProjects(projects.Projects);
+		} catch (err) {
+			console.error(err);
+		}
 	};
+
+	useEffect(
+		() => {
+			if (authToken) {
+				setNeedLogin(false);
+			} else {
+				setNeedLogin(true);
+			}
+		},
+		[ authToken ]
+	);
 
 	useEffect(
 		() => {

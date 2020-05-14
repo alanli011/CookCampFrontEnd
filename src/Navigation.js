@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link, NavLink, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import CookContext from './CookContext';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -60,7 +60,6 @@ const Navigation = () => {
 		logout();
 		setAuth(false);
 		setAnchorEl(null);
-		return <Redirect to="/" />;
 	};
 
 	useEffect(
@@ -114,21 +113,17 @@ const Navigation = () => {
 								open={open}
 								onClose={handleClose}
 							>
-								<MenuItem onClick={handleClose}>Profile</MenuItem>
+								{/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
 								<MenuItem onClick={handleLogOut}>Log Out</MenuItem>
 							</Menu>
 						</div>
 					) : (
 						<div>
-							<Button color="inherit">
-								<NavLink className={classes.link} to="/login">
-									Login
-								</NavLink>
+							<Button color="inherit" href="/login" className={classes.link}>
+								Login
 							</Button>
-							<Button color="inherit">
-								<NavLink className={classes.link} to="/signup">
-									Sign Up
-								</NavLink>
+							<Button color="inherit" href="/signup" className={classes.link}>
+								Sign Up
 							</Button>
 						</div>
 					)}

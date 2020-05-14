@@ -42,6 +42,10 @@ const ProjectBrowser = (props) => {
 		[ loadProjects, projects.length ]
 	);
 
+	useEffect(() => {
+		document.title = 'CookCamp - Projects';
+	}, []);
+
 	const classes = useStyles();
 
 	return (
@@ -50,11 +54,11 @@ const ProjectBrowser = (props) => {
 				<section className={classes.centered}>
 					<h2>Projects</h2>
 				</section>
-				<Grid container spacing={2} direction="row" justify="flex-start" alignItems="flex-start">
+				<Grid container spacing={2} direction="row" justify="center" alignItems="flex-start">
 					{projects.map((project) => {
 						return (
-							<Grid item xs={12} sm={6} md={3}>
-								<NavLink key={project.id} to={`/projects/${project.id}`}>
+							<Grid item key={project.id} xs={12} sm={6} md={3}>
+								<NavLink to={`/projects/${project.id}`}>
 									<Card className={classes.card} variant="outlined">
 										<CardContent>
 											<Typography className={classes.title}>{project.projectName}</Typography>
