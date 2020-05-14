@@ -4,13 +4,14 @@ import CookContext from './CookContext';
 import { baseUrl } from './config';
 
 const AppWithContext = () => {
-	const token = window.localStorage.getItem('state-cookcamp-token');
+	const localStorageToken = localStorage.getItem('state-cookcamp-token');
+	const localStorageTokenId = localStorage.getItem('state-cookcamp-id');
 
-	const [ authToken, setAuthToken ] = useState(token);
-	const [ authId, setAuthId ] = useState(null);
+	const [ authToken, setAuthToken ] = useState(localStorageToken);
+	const [ authId, setAuthId ] = useState(localStorageTokenId);
 	const [ user, setUser ] = useState('');
 	const [ projects, setProjects ] = useState([]);
-	const [ needLogin, setNeedLogin ] = useState(!!token);
+	const [ needLogin, setNeedLogin ] = useState(!!localStorageToken);
 
 	const login = (token, id) => {
 		window.localStorage.setItem('state-cookcamp-token', token);
