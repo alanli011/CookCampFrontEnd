@@ -42,6 +42,10 @@ const ProjectBrowser = (props) => {
 		[ loadProjects, projects.length ]
 	);
 
+	useEffect(() => {
+		document.title = 'CookCamp - Projects';
+	}, []);
+
 	const classes = useStyles();
 
 	return (
