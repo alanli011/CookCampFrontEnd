@@ -67,7 +67,7 @@ const NewProject = () => {
 			}
 			const { project } = await res.json();
 			console.log(project);
-			setProjects([ project, ...projects ]);
+			setProjects([ ...projects, project ]);
 			setRedirect(true);
 		} catch (err) {
 			console.error(err);

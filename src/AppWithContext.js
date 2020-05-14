@@ -31,27 +31,24 @@ const AppWithContext = () => {
 		setAuthId(null);
 	};
 
-	const loadProjects = useCallback(
-		async () => {
-			try {
-				if (!authId) return;
-				const res = await fetch(`${baseUrl}/users/${authId}/projects`, {
-					headers: {
-						Authorization: `Bearer ${authToken}`
-					}
-				});
-				if (!res.ok) {
-					throw res;
+	const loadProjects = async () => {
+		try {
+			if (!authId) return;
+			const res = await fetch(`${baseUrl}/users/${authId}/projects`, {
+				headers: {
+					Authorization: `Bearer ${authToken}`
 				}
-
-				const { projects } = await res.json();
-				setProjects(projects.Projects);
-			} catch (err) {
-				console.error(err);
+			});
+			if (!res.ok) {
+				throw res;
 			}
-		},
-		[ authId, authToken, setProjects ]
-	);
+
+			const { projects } = await res.json();
+			setProjects(projects.Projects);
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
 	useEffect(
 		() => {
