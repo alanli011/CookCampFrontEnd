@@ -1,16 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
 import { baseUrl } from './config';
+import { Redirect } from 'react-router-dom';
 import CookContext from './CookContext';
 
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import NoteIcon from '@material-ui/icons/Note';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -32,46 +31,56 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const Login = () => {
-	const { authId, login, authToken } = useContext(CookContext);
-	const [ email, setEmail ] = useState('demoUser@demo.com');
-	const [ password, setPassword ] = useState('cooking');
+const NewProject = () => {
+	const { authId, setProjects, projects } = useContext(CookContext);
+	const [ projectName, setProjectName ] = useState('');
+	const [ projectDescription, setProjectDescription ] = useState('');
+	const [ redirect, setRedirect ] = useState(false);
 
-	useEffect(() => {
-		document.title = 'CookCamp - Login';
-	}, []);
+	const updateProjectName = (e) => {
+		setProjectName(e.target.value);
+	};
+
+	const updateProjectDescription = (e) => {
+		setProjectDescription(e.target.value);
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
 		try {
-			const res = await fetch(`${baseUrl}/users/token`, {
-				method: 'POST',
-				body: JSON.stringify({ email, password }),
+			const res = await fetch(`${baseUrl}/users/${authId}/projects`, {
+				method: 'post',
 				headers: {
 					'Content-Type': 'application/json'
-				}
+				},
+				body: JSON.stringify({
+					user: {
+						id: authId
+					},
+					projectName,
+					projectDescription
+				})
 			});
 			if (!res.ok) {
 				throw res;
 			}
-			const { token, user: { id } } = await res.json();
-			login(token, id);
+			const { project } = await res.json();
+			console.log(project);
+			setProjects([ ...projects, project ]);
+			setRedirect(true);
 		} catch (err) {
 			console.error(err);
 		}
 	};
 
-	const updateEmail = (e) => {
-		setEmail(e.target.value);
-	};
-
-	const updatePassword = (e) => {
-		setPassword(e.target.value);
-	};
-
 	const classes = useStyles();
 
-	if (authToken) {
+	useEffect(() => {
+		document.title = 'Create New Project';
+	}, []);
+
+	if (redirect) {
 		return <Redirect to={`/${authId}/projects`} />;
 	}
 
@@ -79,10 +88,10 @@ const Login = () => {
 		<Container component="main" maxWidth="xs">
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>
-					<LockOutlinedIcon />
+					<NoteIcon />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-					Sign in
+					Create a New Project
 				</Typography>
 				<form className={classes.form} noValidate onSubmit={handleSubmit}>
 					<TextField
@@ -90,41 +99,31 @@ const Login = () => {
 						margin="normal"
 						required
 						fullWidth
-						id="email"
-						label="Email Address"
-						name="email"
+						id="projectName"
+						label="Project Name"
+						name="projectName"
 						autoComplete="email"
 						autoFocus
-						onChange={updateEmail}
-						value={email}
+						onChange={updateProjectName}
+						value={projectName}
 					/>
 					<TextField
 						variant="outlined"
 						margin="normal"
-						required
 						fullWidth
-						name="password"
-						label="Password"
-						type="password"
-						id="password"
-						autoComplete="current-password"
-						value={password}
-						onChange={updatePassword}
+						name="projectDescription"
+						label="Project Description"
+						id="projectDescription"
+						value={projectDescription}
+						onChange={updateProjectDescription}
 					/>
 					<Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-						Sign In
+						Submit
 					</Button>
-					<Grid container justify="flex-end">
-						<Grid item>
-							<Link to="/signup" variant="body2">
-								Don't have an account? Sign Up!
-							</Link>
-						</Grid>
-					</Grid>
 				</form>
 			</div>
 		</Container>
 	);
 };
 
-export default Login;
+export default NewProject;

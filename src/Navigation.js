@@ -8,7 +8,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar';
 import HomeIcon from '@material-ui/icons/Home';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -42,12 +42,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Navigation = () => {
-	const { authToken, logout, user } = useContext(CookContext);
+	const { authToken, authId, logout, user, firstInitial, lastInitial } = useContext(CookContext);
 	const [ auth, setAuth ] = useState(false);
 	const [ anchorEl, setAnchorEl ] = useState(null);
 	const open = Boolean(anchorEl);
 	const classes = useStyles();
 
+	console.log(user.firstName);
 	const handleMenu = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -80,7 +81,7 @@ const Navigation = () => {
 						<Typography variant="h6">CookCamp</Typography>
 					</Button>
 					{auth && (
-						<Link className={classes.home} to="/projects">
+						<Link className={classes.home} to={`/${authId}/projects`}>
 							<HomeIcon />
 							<div>Home</div>
 						</Link>
@@ -96,7 +97,7 @@ const Navigation = () => {
 								onClick={handleMenu}
 								color="inherit"
 							>
-								<AccountCircle />
+								<Avatar>{`${firstInitial}${lastInitial}`}</Avatar>
 							</IconButton>
 							<Menu
 								id="menu-appbar"

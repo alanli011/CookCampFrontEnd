@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import App from './App';
 import CookContext from './CookContext';
 import { baseUrl } from './config';
@@ -12,6 +12,8 @@ const AppWithContext = () => {
 	const [ user, setUser ] = useState('');
 	const [ projects, setProjects ] = useState([]);
 	const [ needLogin, setNeedLogin ] = useState(!!localStorageToken);
+	const [ firstInitial, setFirstInitial ] = useState('');
+	const [ lastInitial, setLastInitial ] = useState('');
 
 	const login = (token, id) => {
 		window.localStorage.setItem('state-cookcamp-token', token);
@@ -42,7 +44,6 @@ const AppWithContext = () => {
 			}
 
 			const { projects } = await res.json();
-			console.log(projects);
 			setProjects(projects.Projects);
 		} catch (err) {
 			console.error(err);
@@ -76,6 +77,8 @@ const AppWithContext = () => {
 
 					const { user } = await res.json();
 					setUser(user);
+					setFirstInitial(user.firstName.slice(0, 1));
+					setLastInitial(user.lastName.slice(0, 1));
 				};
 				getUser();
 			}
@@ -84,7 +87,21 @@ const AppWithContext = () => {
 	);
 
 	return (
-		<CookContext.Provider value={{ authToken, authId, needLogin, login, logout, user, projects, loadProjects }}>
+		<CookContext.Provider
+			value={{
+				authToken,
+				authId,
+				needLogin,
+				login,
+				logout,
+				user,
+				projects,
+				loadProjects,
+				setProjects,
+				firstInitial,
+				lastInitial
+			}}
+		>
 			<App />
 		</CookContext.Provider>
 	);
