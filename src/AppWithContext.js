@@ -42,7 +42,6 @@ const AppWithContext = () => {
 			}
 
 			const { projects } = await res.json();
-			console.log(projects);
 			setProjects(projects.Projects);
 		} catch (err) {
 			console.error(err);

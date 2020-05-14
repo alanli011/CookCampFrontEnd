@@ -18,7 +18,6 @@ const PrivateRoute = ({ path, component: Component, needLogin, componentProps })
 
 const App = (props) => {
 	const { needLogin } = useContext(CookContext);
-	console.log(needLogin);
 	return (
 		<BrowserRouter>
 			<Navigation />
