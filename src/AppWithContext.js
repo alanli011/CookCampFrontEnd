@@ -53,6 +53,8 @@ const AppWithContext = () => {
 		() => {
 			if (authToken) {
 				setNeedLogin(false);
+			} else {
+				setNeedLogin(true);
 			}
 		},
 		[ authToken ]
