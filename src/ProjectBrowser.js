@@ -50,7 +50,7 @@ const ProjectBrowser = (props) => {
 				<section className={classes.centered}>
 					<h2>Projects</h2>
 				</section>
-				<Grid container spacing={2} direction="row" justify="flex-start" alignItems="flex-start">
+				<Grid container spacing={2} direction="row" justify="center" alignItems="flex-start">
 					{projects.map((project) => {
 						return (
 							<Grid item key={project.id} xs={12} sm={6} md={3}>
