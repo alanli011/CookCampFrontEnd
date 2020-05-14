@@ -33,13 +33,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProjectBrowser = (props) => {
-	const { projects, loadProjects } = useContext(CookContext);
+	const { authToken, projects, loadProjects } = useContext(CookContext);
 
 	useEffect(
 		() => {
-			if (projects.length === 0) loadProjects();
+			if (projects.length === 0) {
+				loadProjects();
+			}
 		},
-		[ loadProjects, projects.length ]
+		[ authToken, projects.length ]
 	);
 
 	useEffect(() => {
