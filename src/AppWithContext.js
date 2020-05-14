@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import App from './App';
 import CookContext from './CookContext';
 import { baseUrl } from './config';
@@ -12,6 +12,8 @@ const AppWithContext = () => {
 	const [ user, setUser ] = useState('');
 	const [ projects, setProjects ] = useState([]);
 	const [ needLogin, setNeedLogin ] = useState(!!localStorageToken);
+	const [ firstInitial, setFirstInitial ] = useState('');
+	const [ lastInitial, setLastInitial ] = useState('');
 
 	const login = (token, id) => {
 		window.localStorage.setItem('state-cookcamp-token', token);
@@ -29,24 +31,27 @@ const AppWithContext = () => {
 		setAuthId(null);
 	};
 
-	const loadProjects = async () => {
-		try {
-			if (!authId) return;
-			const res = await fetch(`${baseUrl}/users/${authId}/projects`, {
-				headers: {
-					Authorization: `Bearer ${authToken}`
+	const loadProjects = useCallback(
+		async () => {
+			try {
+				if (!authId) return;
+				const res = await fetch(`${baseUrl}/users/${authId}/projects`, {
+					headers: {
+						Authorization: `Bearer ${authToken}`
+					}
+				});
+				if (!res.ok) {
+					throw res;
 				}
-			});
-			if (!res.ok) {
-				throw res;
-			}
 
-			const { projects } = await res.json();
-			setProjects(projects.Projects);
-		} catch (err) {
-			console.error(err);
-		}
-	};
+				const { projects } = await res.json();
+				setProjects(projects.Projects);
+			} catch (err) {
+				console.error(err);
+			}
+		},
+		[ authId, authToken, setProjects ]
+	);
 
 	useEffect(
 		() => {
@@ -75,6 +80,8 @@ const AppWithContext = () => {
 
 					const { user } = await res.json();
 					setUser(user);
+					setFirstInitial(user.firstName.slice(0, 1));
+					setLastInitial(user.lastName.slice(0, 1));
 				};
 				getUser();
 			}
@@ -83,7 +90,21 @@ const AppWithContext = () => {
 	);
 
 	return (
-		<CookContext.Provider value={{ authToken, authId, needLogin, login, logout, user, projects, loadProjects }}>
+		<CookContext.Provider
+			value={{
+				authToken,
+				authId,
+				needLogin,
+				login,
+				logout,
+				user,
+				projects,
+				loadProjects,
+				setProjects,
+				firstInitial,
+				lastInitial
+			}}
+		>
 			<App />
 		</CookContext.Provider>
 	);
