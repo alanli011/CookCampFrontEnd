@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignUp = () => {
-	const { login, authToken } = useContext(CookContext);
+	const { authId, login, authToken } = useContext(CookContext);
 	const [ userName, setUserName ] = useState('');
 	const [ firstName, setFirstName ] = useState('');
 	const [ lastName, setlastName ] = useState('');
@@ -89,7 +89,7 @@ const SignUp = () => {
 	const classes = useStyles();
 
 	if (authToken) {
-		return <Redirect to="/projects" />;
+		return <Redirect to={`/${authId}/projects`} />;
 	}
 
 	return (

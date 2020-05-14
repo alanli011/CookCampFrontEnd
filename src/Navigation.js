@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Navigation = () => {
-	const { authToken, logout, user } = useContext(CookContext);
+	const { authToken, authId, logout, user } = useContext(CookContext);
 	const [ auth, setAuth ] = useState(false);
 	const [ anchorEl, setAnchorEl ] = useState(null);
 	const open = Boolean(anchorEl);
@@ -80,7 +80,7 @@ const Navigation = () => {
 						<Typography variant="h6">CookCamp</Typography>
 					</Button>
 					{auth && (
-						<Link className={classes.home} to="/projects">
+						<Link className={classes.home} to={`/${authId}/projects`}>
 							<HomeIcon />
 							<div>Home</div>
 						</Link>
