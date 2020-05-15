@@ -27,14 +27,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Home = () => {
-	const { authToken } = useContext(CookContext);
+	const { authToken, authId } = useContext(CookContext);
 	useEffect(() => {
 		document.title = 'CookCamp - Home';
 	}, []);
 
 	const classes = useStyles();
-	if (authToken) {
-		return <Redirect to="/projects" />;
+
+	if (authToken && authId) {
+		return <Redirect to={`/${authId}/projects`} />;
 	}
 	return (
 		<Container component="main">

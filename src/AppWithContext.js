@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import App from './App';
 import CookContext from './CookContext';
 import { baseUrl } from './config';
@@ -11,24 +12,27 @@ const AppWithContext = () => {
 	const [ authId, setAuthId ] = useState(localStorageTokenId);
 	const [ user, setUser ] = useState('');
 	const [ projects, setProjects ] = useState([]);
-	const [ needLogin, setNeedLogin ] = useState(!!localStorageToken);
+	const [ singleProject, setSingleProject ] = useState(null);
 	const [ firstInitial, setFirstInitial ] = useState('');
 	const [ lastInitial, setLastInitial ] = useState('');
+	const [ loggedOut, setLoggedOut ] = useState(false);
 
 	const login = (token, id) => {
 		window.localStorage.setItem('state-cookcamp-token', token);
 		window.localStorage.setItem('state-cookcamp-id', id);
-		setNeedLogin(false);
-		setAuthToken(token);
 		setAuthId(id);
+		setAuthToken(token);
 	};
 
 	const logout = () => {
 		window.localStorage.removeItem('state-cookcamp-token');
 		window.localStorage.removeItem('state-cookcamp-id');
-		setNeedLogin(true);
 		setAuthToken(null);
 		setAuthId(null);
+		setLoggedOut(true);
+		// if (loggedOut) {
+		// 	return <Redirect to="/" />;
+		// }
 	};
 
 	const loadProjects = async () => {
@@ -50,16 +54,23 @@ const AppWithContext = () => {
 		}
 	};
 
-	useEffect(
-		() => {
-			if (authToken) {
-				setNeedLogin(false);
-			} else {
-				setNeedLogin(true);
+	const loadOneProject = async (id) => {
+		try {
+			const res = await fetch(`${baseUrl}/projects/${id}`, {
+				headers: {
+					Authorization: `Bearer ${authToken}`
+				}
+			});
+			if (!res.ok) {
+				throw res;
 			}
-		},
-		[ authToken ]
-	);
+			const { project } = await res.json();
+			console.log(project);
+			setSingleProject(project);
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
 	useEffect(
 		() => {
@@ -91,15 +102,17 @@ const AppWithContext = () => {
 			value={{
 				authToken,
 				authId,
-				needLogin,
 				login,
 				logout,
 				user,
+				setProjects,
 				projects,
 				loadProjects,
-				setProjects,
+				singleProject,
+				loadOneProject,
 				firstInitial,
-				lastInitial
+				lastInitial,
+				loggedOut
 			}}
 		>
 			<App />
