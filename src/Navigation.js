@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
 		display: 'flex',
-		alignItems: 'center'
+		alignItems: 'center',
+		backgroundColor: 'inherit'
 	},
 	title: {
 		flexGrow: 1
@@ -38,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center'
+	},
+	navbar: {
+		backgroundColor: 'inherit'
 	}
 }));
 
@@ -75,7 +79,7 @@ const Navigation = (props) => {
 	return (
 		<div className={classes.root}>
 			<CssBaseline />
-			<AppBar color="inherit" position="static">
+			<AppBar className={classes.navbar} color="inherit" position="static">
 				<Toolbar className={classes.ToolBar}>
 					<Button href="/">
 						<Typography variant="h6">CookCamp</Typography>

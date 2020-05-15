@@ -42,6 +42,7 @@ const AppWithContext = () => {
 			}
 
 			const { projects } = await res.json();
+			console.log(projects);
 			setProjects(projects.Projects);
 		} catch (err) {
 			console.error(err);
@@ -59,7 +60,6 @@ const AppWithContext = () => {
 				throw res;
 			}
 			const { project } = await res.json();
-			console.log(project);
 			setSingleProject(project);
 		} catch (err) {
 			console.error(err);
