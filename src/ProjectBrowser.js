@@ -45,16 +45,16 @@ const useStyles = makeStyles((theme) => ({
 		right: '30%'
 	},
 	header: {
-		position: 'relative',
-		'&::before': {
-			content: '',
-			width: '100%',
-			position: 'absolute',
-			top: '50%',
-			height: '1px',
-			backgroundColor: '#555',
-			transform: 'translateY(-50%)'
-		}
+		position: 'relative'
+		// '&::before': {
+		// 	content: '',
+		// 	width: '100%',
+		// 	position: 'absolute',
+		// 	top: '50%',
+		// 	height: '1px',
+		// 	backgroundColor: '#555',
+		// 	transform: 'translateY(-50%)'
+		// }
 	},
 	cards: {
 		display: 'flex',
