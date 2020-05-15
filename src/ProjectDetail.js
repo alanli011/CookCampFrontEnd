@@ -51,6 +51,22 @@ const ProjectDetail = (props) => {
 				<section className={classes.centered}>
 					<h1>{project.projectName}</h1>
 				</section>
+				<Grid container spacing={3}>
+					<Grid item xs={6}>
+						<Card>
+							<CardContent>
+								<Typography>Message Board</Typography>
+							</CardContent>
+						</Card>
+					</Grid>
+					<Grid item xs={6}>
+						<Card>
+							<CardContent>
+								<Typography>To Do List</Typography>
+							</CardContent>
+						</Card>
+					</Grid>
+				</Grid>
 			</Container>
 		</main>
 	);
