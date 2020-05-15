@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink } from 'react-router-dom';
 import CookContext from './CookContext';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,9 +8,13 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import AddIcon from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import FolderIcon from '@material-ui/icons/Folder';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -32,24 +36,29 @@ const useStyles = makeStyles((theme) => ({
 		borderBottom: '1px solid #d9d9d9',
 		borderRadius: '0.5rem 0.5rem 0 0',
 		paddingBottom: '12px'
+	},
+	noUnderline: {
+		textDecoration: 'none'
 	}
 }));
 
 const ProjectDetail = (props) => {
-	const { loadOneProject, singleProject: project } = useContext(CookContext);
+	const { loadOneProject, singleProject: project, loadProjectMessages, messages, authId } = useContext(CookContext);
 	const { id } = useParams();
 
 	useEffect(
 		() => {
 			if (!project) {
 				loadOneProject(id);
+				loadProjectMessages(id);
 			} else if (project.id !== parseInt(id, 10)) {
 				loadOneProject(id);
+				loadProjectMessages(id);
 			} else {
 				document.title = project.projectName;
 			}
 		},
-		[ loadOneProject, id, project ]
+		[ loadOneProject, id, project, loadProjectMessages ]
 	);
 
 	const classes = useStyles();
@@ -69,13 +78,30 @@ const ProjectDetail = (props) => {
 				</section>
 				<Grid container spacing={3}>
 					<Grid item xs={6}>
-						<Card>
-							<CardContent>
-								<Typography className={classes.cardTextStyles} align="center" variant="h6">
-									Message Board
-								</Typography>
-							</CardContent>
-						</Card>
+						<NavLink className={classes.noUnderline} to={`/${authId}/projects/${id}/message_board`}>
+							<Card>
+								<CardContent>
+									<Typography className={classes.cardTextStyles} align="center" variant="h6">
+										Message Board
+									</Typography>
+									{messages.map((message) => {
+										return (
+											<List key={message.id}>
+												<ListItem>
+													<ListItemAvatar>
+														<Avatar>
+															<FolderIcon />
+														</Avatar>
+													</ListItemAvatar>
+													<ListItemText primary={message.name} />
+												</ListItem>
+												<Divider />
+											</List>
+										);
+									})}
+								</CardContent>
+							</Card>
+						</NavLink>
 					</Grid>
 					<Grid item xs={6}>
 						<Card>

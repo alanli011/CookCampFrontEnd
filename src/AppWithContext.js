@@ -9,11 +9,15 @@ const AppWithContext = () => {
 
 	const [ authToken, setAuthToken ] = useState(localStorageToken);
 	const [ authId, setAuthId ] = useState(localStorageTokenId);
+
 	const [ user, setUser ] = useState('');
-	const [ projects, setProjects ] = useState([]);
-	const [ singleProject, setSingleProject ] = useState(null);
 	const [ firstInitial, setFirstInitial ] = useState('');
 	const [ lastInitial, setLastInitial ] = useState('');
+
+	const [ projects, setProjects ] = useState([]);
+	const [ singleProject, setSingleProject ] = useState(null);
+
+	const [ messages, setMessages ] = useState([]);
 
 	const login = (token, id) => {
 		window.localStorage.setItem('state-cookcamp-token', token);
@@ -43,6 +47,26 @@ const AppWithContext = () => {
 
 			const { projects } = await res.json();
 			setProjects(projects.Projects);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
+	const loadProjectMessages = async (id) => {
+		try {
+			if (!authId) return;
+			const res = await fetch(`${baseUrl}/projects/${id}/messages`, {
+				headers: {
+					Authorization: `Bearer ${authToken}`
+				}
+			});
+
+			if (!res.ok) {
+				throw res;
+			}
+
+			const { messages } = await res.json();
+			setMessages(messages);
 		} catch (err) {
 			console.error(err);
 		}
@@ -104,7 +128,9 @@ const AppWithContext = () => {
 				singleProject,
 				loadOneProject,
 				firstInitial,
-				lastInitial
+				lastInitial,
+				loadProjectMessages,
+				messages
 			}}
 		>
 			<App />
