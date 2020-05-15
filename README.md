@@ -6,5 +6,11 @@ Please read the README on the backend: [README](https://github.com/alanli011/Coo
 
 ## Technologies
 
-* React / Redux
+* React
 * Express
+* Material UI
+* PostGres
+
+## Heroku and Hosting
+
+You can find the live app [here](https://cookcamp-frontend.herokuapp.com)
