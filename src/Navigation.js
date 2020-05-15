@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link, Redirect, useLocation } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import CookContext from './CookContext';
-import Home from './Home';
 
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -42,13 +41,12 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const Navigation = () => {
-	const { authToken, authId, logout, user, firstInitial, lastInitial, loggedOut } = useContext(CookContext);
+const Navigation = (props) => {
+	const { authToken, authId, logout, user, firstInitial, lastInitial } = useContext(CookContext);
 	const [ auth, setAuth ] = useState(false);
 	const [ anchorEl, setAnchorEl ] = useState(null);
 	const open = Boolean(anchorEl);
 	const classes = useStyles();
-	const { pathName } = useLocation();
 
 	const handleMenu = (event) => {
 		setAnchorEl(event.currentTarget);
@@ -59,13 +57,10 @@ const Navigation = () => {
 	};
 
 	const handleLogOut = () => {
-		console.log('this happenened 1');
 		logout();
-		console.log('this happenened 2');
 		setAuth(false);
-		console.log('this happenened 3');
 		setAnchorEl(null);
-		console.log('this happenened 4');
+		props.history.push('/');
 	};
 
 	useEffect(
@@ -76,10 +71,6 @@ const Navigation = () => {
 		},
 		[ authToken, logout ]
 	);
-
-	// if (loggedOut === true) {
-	// 	return <Redirect from={pathName} to="/" />;
-	// }
 
 	return (
 		<div className={classes.root}>
@@ -143,4 +134,4 @@ const Navigation = () => {
 	);
 };
 
-export default Navigation;
+export default withRouter(Navigation);

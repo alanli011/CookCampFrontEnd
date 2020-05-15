@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
 import App from './App';
 import CookContext from './CookContext';
 import { baseUrl } from './config';
@@ -15,7 +14,6 @@ const AppWithContext = () => {
 	const [ singleProject, setSingleProject ] = useState(null);
 	const [ firstInitial, setFirstInitial ] = useState('');
 	const [ lastInitial, setLastInitial ] = useState('');
-	const [ loggedOut, setLoggedOut ] = useState(false);
 
 	const login = (token, id) => {
 		window.localStorage.setItem('state-cookcamp-token', token);
@@ -29,10 +27,6 @@ const AppWithContext = () => {
 		window.localStorage.removeItem('state-cookcamp-id');
 		setAuthToken(null);
 		setAuthId(null);
-		setLoggedOut(true);
-		// if (loggedOut) {
-		// 	return <Redirect to="/" />;
-		// }
 	};
 
 	const loadProjects = async () => {
@@ -111,8 +105,7 @@ const AppWithContext = () => {
 				singleProject,
 				loadOneProject,
 				firstInitial,
-				lastInitial,
-				loggedOut
+				lastInitial
 			}}
 		>
 			<App />
