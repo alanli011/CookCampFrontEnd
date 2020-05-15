@@ -15,7 +15,7 @@ import Avatar from '@material-ui/core/Avatar';
 const useStyles = makeStyles((theme) => ({
 	centered: {
 		display: 'flex',
-		justifyContent: 'center',
+		justifyContent: 'space-between',
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -31,18 +31,15 @@ const useStyles = makeStyles((theme) => ({
 		display: 'grid',
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		justifyContent: 'center'
+		justifyContent: 'space-between'
 	},
 	card: {
 		maxWidth: '300px',
-		minHeight: '150px'
+		minHeight: '150px',
+		display: 'flex'
 	},
 	addIconStyle: {
 		color: 'green'
-	},
-	newButton: {
-		position: 'relative',
-		right: '30%'
 	},
 	header: {
 		position: 'relative',
@@ -58,11 +55,20 @@ const useStyles = makeStyles((theme) => ({
 	},
 	cards: {
 		display: 'flex',
-		flexDirection: 'column'
+		flexDirection: 'column',
+		justifyContent: 'space-between'
 	},
 
 	noUnderline: {
 		textDecoration: 'none'
+	},
+	buttonStyles: {
+		backgroundColor: 'white'
+	},
+	avatarSize: {
+		fontSize: '15px',
+		height: '30px',
+		width: '30px'
 	}
 }));
 
@@ -88,9 +94,15 @@ const ProjectBrowser = (props) => {
 		<main>
 			<Container className={classes.root}>
 				<section className={classes.centered}>
-					<div className={classes.newButton}>
+					<div>
 						<Link to={`/${authId}/projects/create-new`} className={classes.noUnderline}>
-							<Button type="button" size="small" color="default" variant="contained">
+							<Button
+								className={classes.buttonStyles}
+								type="button"
+								size="small"
+								color="default"
+								variant="contained"
+							>
 								<AddIcon className={classes.addIconStyle} /> New
 							</Button>
 						</Link>
@@ -98,21 +110,28 @@ const ProjectBrowser = (props) => {
 					<div className={classes.header}>
 						<h2>Projects</h2>
 					</div>
+					<div />
 				</section>
 
 				<Grid container spacing={2} direction="row" justify="center" alignItems="flex-start">
 					{projects.map((project) => {
 						return (
-							<Grid item key={project.id} xs={12} sm={6} md={3}>
+							<Grid className={classes.my} item key={project.id} xs={12} sm={6} md={4}>
 								<NavLink className={classes.noUnderline} to={`/${authId}/projects/${project.id}`}>
 									<Card className={classes.card} variant="outlined">
 										<CardContent className={classes.cards}>
-											<Typography className={classes.title}>{project.projectName}</Typography>
-											<Typography component="p" variant="body2">
-												{project.projectDescription}
-											</Typography>
+											<div>
+												<Typography className={classes.title}>{project.projectName}</Typography>
+											</div>
+											<div>
+												<Typography component="p" variant="body2">
+													{project.projectDescription}
+												</Typography>
+											</div>
 
-											<Avatar>{`${firstInitial}${lastInitial}`}</Avatar>
+											<Avatar
+												className={classes.avatarSize}
+											>{`${firstInitial}${lastInitial}`}</Avatar>
 										</CardContent>
 									</Card>
 								</NavLink>

@@ -59,7 +59,6 @@ const AppWithContext = () => {
 				throw res;
 			}
 			const { project } = await res.json();
-			console.log(project);
 			setSingleProject(project);
 		} catch (err) {
 			console.error(err);

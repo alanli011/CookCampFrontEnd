@@ -16,20 +16,28 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
 		padding: theme.spacing(2),
-		maxWidth: '800px'
+		maxWidth: '800px',
+		backgroundColor: 'white',
+		marginTop: '20px',
+		borderRadius: '4px',
+		boxShadow: '2px 2px 1px lightgray;'
 	},
 	centered: {
 		display: 'flex',
-		justifyContent: 'center',
-		flexDirection: 'row',
-		alignItems: 'center'
+		flexDirection: 'column',
+		alignItems: 'center',
+		paddingBottom: '24px'
+	},
+	cardTextStyles: {
+		borderBottom: '1px solid #d9d9d9',
+		borderRadius: '0.5rem 0.5rem 0 0',
+		paddingBottom: '12px'
 	}
 }));
 
 const ProjectDetail = (props) => {
 	const { loadOneProject, singleProject: project } = useContext(CookContext);
 	const { id } = useParams();
-	console.log(id);
 
 	useEffect(
 		() => {
@@ -37,10 +45,13 @@ const ProjectDetail = (props) => {
 				loadOneProject(id);
 			} else if (project.id !== parseInt(id, 10)) {
 				loadOneProject(id);
+			} else {
+				document.title = project.projectName;
 			}
 		},
 		[ loadOneProject, id, project ]
 	);
+
 	const classes = useStyles();
 
 	if (!project) return null;
@@ -49,20 +60,29 @@ const ProjectDetail = (props) => {
 		<main>
 			<Container className={classes.root}>
 				<section className={classes.centered}>
-					<h1>{project.projectName}</h1>
+					<Typography align="center" variant="h4">
+						{project.projectName}
+					</Typography>
+					<Typography align="center" variant="h5">
+						{project.projectDescription}
+					</Typography>
 				</section>
 				<Grid container spacing={3}>
 					<Grid item xs={6}>
 						<Card>
 							<CardContent>
-								<Typography>Message Board</Typography>
+								<Typography className={classes.cardTextStyles} align="center" variant="h6">
+									Message Board
+								</Typography>
 							</CardContent>
 						</Card>
 					</Grid>
 					<Grid item xs={6}>
 						<Card>
 							<CardContent>
-								<Typography>To Do List</Typography>
+								<Typography className={classes.cardTextStyles} align="center" variant="h6">
+									To Do
+								</Typography>
 							</CardContent>
 						</Card>
 					</Grid>

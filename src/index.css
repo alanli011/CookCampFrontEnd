@@ -12,3 +12,7 @@ main {
 form {
 	flex: 0 0 400px;
 }
+
+#root {
+	background-color: antiquewhite !important;
+}
