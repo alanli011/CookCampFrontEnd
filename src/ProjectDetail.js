@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import CookContext from './CookContext';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,11 +12,47 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 
+const useStyles = makeStyles((theme) => ({
+	root: {
+		flexGrow: 1,
+		padding: theme.spacing(2),
+		maxWidth: '800px'
+	},
+	centered: {
+		display: 'flex',
+		justifyContent: 'center',
+		flexDirection: 'row',
+		alignItems: 'center'
+	}
+}));
+
 const ProjectDetail = (props) => {
+	const { loadOneProject, singleProject: project } = useContext(CookContext);
+	const { id } = useParams();
+	console.log(id);
+
+	useEffect(
+		() => {
+			if (!project) {
+				loadOneProject(id);
+			} else if (project.id !== parseInt(id, 10)) {
+				loadOneProject(id);
+			}
+		},
+		[ loadOneProject, id, project ]
+	);
+	const classes = useStyles();
+
+	if (!project) return null;
+
 	return (
-		<React.Fragment>
-			<h1>Project details</h1>
-		</React.Fragment>
+		<main>
+			<Container className={classes.root}>
+				<section className={classes.centered}>
+					<h1>{project.projectName}</h1>
+				</section>
+			</Container>
+		</main>
 	);
 };
 

@@ -11,16 +11,21 @@ import PrivateRoute from './RoutesUtil';
 import NewProject from './NewProject';
 
 const App = (props) => {
-	const { authId, needLogin } = useContext(CookContext);
+	const { authId, authToken } = useContext(CookContext);
 	return (
 		<BrowserRouter>
 			<Navigation />
 			<Switch>
-				<PrivateRoute path={`/${authId}/projects/create-new`} component={NewProject} needLogin={needLogin} />
-				<PrivateRoute path={`/${authId}/projects/:id`} component={ProjectDetail} needLogin={needLogin} />
-				<PrivateRoute path={`/${authId}/projects`} component={ProjectBrowser} needLogin={needLogin} />
+				<PrivateRoute
+					exact
+					path={`/${authId}/projects/create-new`}
+					component={NewProject}
+					authToken={authToken}
+				/>
+				<PrivateRoute exact path={`/${authId}/projects/:id`} component={ProjectDetail} authToken={authToken} />
+				<PrivateRoute exact path={`/${authId}/projects`} component={ProjectBrowser} authToken={authToken} />
 				<Route path="/signup" component={SignUp} />
-				<Route path="/login" component={Login} />
+				<Route exact path="/login" component={Login} />
 				<Route exact path="/" component={Home} />
 			</Switch>
 		</BrowserRouter>
