@@ -19,6 +19,8 @@ const AppWithContext = () => {
 
 	const [ messages, setMessages ] = useState([]);
 
+	const [ toDos, setToDos ] = useState([]);
+
 	const login = (token, id) => {
 		window.localStorage.setItem('state-cookcamp-token', token);
 		window.localStorage.setItem('state-cookcamp-id', id);
@@ -52,6 +54,23 @@ const AppWithContext = () => {
 		}
 	};
 
+	const loadOneProject = async (id) => {
+		try {
+			const res = await fetch(`${baseUrl}/projects/${id}`, {
+				headers: {
+					Authorization: `Bearer ${authToken}`
+				}
+			});
+			if (!res.ok) {
+				throw res;
+			}
+			const { project } = await res.json();
+			setSingleProject(project);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	const loadProjectMessages = async (id) => {
 		try {
 			if (!authId) return;
@@ -72,18 +91,21 @@ const AppWithContext = () => {
 		}
 	};
 
-	const loadOneProject = async (id) => {
+	const loadProjectToDos = async (id) => {
 		try {
-			const res = await fetch(`${baseUrl}/projects/${id}`, {
+			if (!authId) return;
+			const res = await fetch(`${baseUrl}/projects/${id}/to-do`, {
 				headers: {
 					Authorization: `Bearer ${authToken}`
 				}
 			});
+
 			if (!res.ok) {
 				throw res;
 			}
-			const { project } = await res.json();
-			setSingleProject(project);
+
+			const { toDos } = await res.json();
+			setToDos(toDos);
 		} catch (err) {
 			console.error(err);
 		}
@@ -130,7 +152,9 @@ const AppWithContext = () => {
 				firstInitial,
 				lastInitial,
 				loadProjectMessages,
-				messages
+				messages,
+				loadProjectToDos,
+				toDos
 			}}
 		>
 			<App />

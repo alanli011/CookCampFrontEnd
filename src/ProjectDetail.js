@@ -43,7 +43,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProjectDetail = (props) => {
-	const { loadOneProject, singleProject: project, loadProjectMessages, messages, authId } = useContext(CookContext);
+	const {
+		loadOneProject,
+		singleProject: project,
+		loadProjectMessages,
+		messages,
+		authId,
+		toDos,
+		loadProjectToDos
+	} = useContext(CookContext);
 	const { id } = useParams();
 
 	useEffect(
@@ -51,14 +59,16 @@ const ProjectDetail = (props) => {
 			if (!project) {
 				loadOneProject(id);
 				loadProjectMessages(id);
+				loadProjectToDos(id);
 			} else if (project.id !== parseInt(id, 10)) {
 				loadOneProject(id);
 				loadProjectMessages(id);
+				loadProjectToDos(id);
 			} else {
 				document.title = project.projectName;
 			}
 		},
-		[ loadOneProject, id, project, loadProjectMessages ]
+		[ loadOneProject, id, project, loadProjectMessages, loadProjectToDos ]
 	);
 
 	const classes = useStyles();
@@ -104,13 +114,30 @@ const ProjectDetail = (props) => {
 						</NavLink>
 					</Grid>
 					<Grid item xs={6}>
-						<Card>
-							<CardContent>
-								<Typography className={classes.cardTextStyles} align="center" variant="h6">
-									To Do
-								</Typography>
-							</CardContent>
-						</Card>
+						<NavLink className={classes.noUnderline} to={`/${authId}/projects/${id}/to_do`}>
+							<Card>
+								<CardContent>
+									<Typography className={classes.cardTextStyles} align="center" variant="h6">
+										To Do
+									</Typography>
+									{toDos.map((toDo) => {
+										return (
+											<List key={toDo.id}>
+												<ListItem>
+													<ListItemAvatar>
+														<Avatar>
+															<FolderIcon />
+														</Avatar>
+													</ListItemAvatar>
+													<ListItemText primary={toDo.name} />
+												</ListItem>
+												<Divider />
+											</List>
+										);
+									})}
+								</CardContent>
+							</Card>
+						</NavLink>
 					</Grid>
 				</Grid>
 			</Container>
