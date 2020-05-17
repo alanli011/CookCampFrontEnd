@@ -4,6 +4,7 @@ import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import CookContext from './CookContext';
+import homepageImage from './images/homepage-demo.png';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -23,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
 	center: {
 		display: 'flex',
 		justifyContent: 'center'
+	},
+	homePageImageStyle: {
+		marginTop: theme.spacing(8),
+		maxWidth: '1300px'
 	}
 }));
 
@@ -46,6 +51,7 @@ const Home = () => {
 						Try CookCamp Today!
 					</Button>
 				</div>
+				<img className={classes.homePageImageStyle} src={homepageImage} alt="demo" />
 			</div>
 		</Container>
 	);
