@@ -153,6 +153,7 @@ const AppWithContext = () => {
 				lastInitial,
 				loadProjectMessages,
 				messages,
+				setMessages,
 				loadProjectToDos,
 				toDos
 			}}

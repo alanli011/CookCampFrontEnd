@@ -21,8 +21,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	root: {
 		flexGrow: 1,
-		padding: theme.spacing(2),
-		maxWidth: '800px'
+		padding: theme.spacing(2)
 	},
 	title: {
 		fontSize: 14
@@ -92,7 +91,7 @@ const ProjectBrowser = (props) => {
 
 	return (
 		<main>
-			<Container className={classes.root}>
+			<Container maxWidth="md" className={classes.root}>
 				<section className={classes.centered}>
 					<div>
 						<Link to={`/${authId}/projects/create-new`} className={classes.noUnderline}>
