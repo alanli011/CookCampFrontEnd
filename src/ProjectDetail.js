@@ -20,11 +20,11 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
 		padding: theme.spacing(2),
-		maxWidth: '800px',
 		backgroundColor: 'white',
 		marginTop: '20px',
+		height: '50vh',
 		borderRadius: '4px',
-		boxShadow: '2px 2px 1px lightgray;'
+		boxShadow: '1px 1px 5px lightgray, -1px -1px 5px lightgray;'
 	},
 	centered: {
 		display: 'flex',
@@ -77,7 +77,7 @@ const ProjectDetail = (props) => {
 
 	return (
 		<main>
-			<Container className={classes.root}>
+			<Container maxWidth="md" className={classes.root}>
 				<section className={classes.centered}>
 					<Typography align="center" variant="h4">
 						{project.projectName}
