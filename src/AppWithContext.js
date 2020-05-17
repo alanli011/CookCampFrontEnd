@@ -18,6 +18,7 @@ const AppWithContext = () => {
 	const [ singleProject, setSingleProject ] = useState(null);
 
 	const [ messages, setMessages ] = useState([]);
+	const [ singleMessage, setSingleMessage ] = useState(null);
 
 	const [ toDos, setToDos ] = useState([]);
 
@@ -91,6 +92,23 @@ const AppWithContext = () => {
 		}
 	};
 
+	const loadOneProjectMessage = async (id) => {
+		try {
+			const res = await fetch(`${baseUrl}/projects/:id/messages/${id}`, {
+				headers: {
+					Authorization: `Bearer ${authToken}`
+				}
+			});
+			if (!res.ok) {
+				throw res;
+			}
+			const { message } = await res.json();
+			setSingleMessage(message);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	const loadProjectToDos = async (id) => {
 		try {
 			if (!authId) return;
@@ -154,6 +172,8 @@ const AppWithContext = () => {
 				loadProjectMessages,
 				messages,
 				setMessages,
+				singleMessage,
+				loadOneProjectMessage,
 				loadProjectToDos,
 				toDos
 			}}
