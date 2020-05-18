@@ -33,49 +33,46 @@ const useStyles = makeStyles((theme) => ({
 	submit: {
 		margin: theme.spacing(3, 0, 2)
 	},
-	messageTitle: {
+	listTitle: {
 		fontSize: '3rem'
 	}
 }));
 
-const NewMessage = (props) => {
-	const { setMessages, messages } = useContext(CookContext);
-	const [ messageName, setMessageName ] = useState('');
-	const [ messageDescription, setMessageDescription ] = useState('');
+const NewToDoList = (props) => {
+	const { toDos, setToDos } = useContext(CookContext);
+
+	const [ listName, setListName ] = useState('');
 	const { id } = useParams();
 
 	useEffect(() => {
-		document.title = 'Create New Message';
+		document.title = 'Create New List';
 	});
 
-	const updateMessageName = (e) => {
-		setMessageName(e.target.value);
-	};
-
-	const updateMessageDescription = (e) => {
-		setMessageDescription(e.target.value);
+	const updateListName = (e) => {
+		setListName(e.target.value);
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		try {
-			const res = await fetch(`${baseUrl}/projects/${id}/messages`, {
+			const res = await fetch(`${baseUrl}/projects/${id}/to-do`, {
 				method: 'post',
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					name: messageName,
-					description: messageDescription,
+					name: listName,
 					projectId: id
 				})
 			});
+
 			if (!res.ok) {
 				throw res;
 			}
-			const { message } = await res.json();
-			setMessages([ ...messages, message ]);
+
+			const { toDo } = await res.json();
+			setToDos([ ...toDos, toDo ]);
 			props.history.goBack();
 		} catch (err) {
 			console.error(err);
@@ -88,33 +85,24 @@ const NewMessage = (props) => {
 		<Container maxWidth="md" className={classes.root}>
 			<div className={classes.paper}>
 				<Typography className={classes.submit} variant="h4">
-					Post a New Message
+					Create a New List
 				</Typography>
 				<form className={classes.form} noValidate onSubmit={handleSubmit}>
 					<TextField
-						className={classes.messageTitle}
+						className={classes.listTitle}
 						margin="normal"
 						required
 						fullWidth
-						id="messageName"
+						id="listTitle"
 						label="Type a title..."
-						name="messageName"
-						onChange={updateMessageName}
-						value={messageName}
+						name="listTitle"
+						value={listName}
+						onChange={updateListName}
 						size="medium"
 						variant="outlined"
 					/>
-					<TextField
-						id="messageDescription"
-						multiline
-						rows={20}
-						value={messageDescription}
-						placeholder="Write away..."
-						fullWidth
-						onChange={updateMessageDescription}
-					/>
 					<Button type="submit" variant="contained" color="primary" className={classes.submit}>
-						Post this message
+						Add this list
 					</Button>
 				</form>
 			</div>
@@ -122,4 +110,4 @@ const NewMessage = (props) => {
 	);
 };
 
-export default withRouter(NewMessage);
+export default withRouter(NewToDoList);
