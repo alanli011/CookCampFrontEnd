@@ -86,6 +86,7 @@ const ToDoList = (props) => {
 				document.title = `${project.projectName} - To-dos`;
 			}
 		},
+		// eslint-disable-next-line
 		[ project, id ]
 	);
 
@@ -110,7 +111,7 @@ const ToDoList = (props) => {
 					{toDos.map((item) => {
 						return (
 							<Grid item key={item.id} xs={12} sm={6} md={4}>
-								<Link className={classes.noUnderline} to={`/${authId}/projects/:id/to_do/${id}`}>
+								<Link className={classes.noUnderline} to={`/${authId}/projects/${id}/to_do/${item.id}`}>
 									<Card className={classes.cards} variant="outlined">
 										<CardContent className={classes.contentStyles}>
 											<Typography gutterBottom variant="h5" component="h2">

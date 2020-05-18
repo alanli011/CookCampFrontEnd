@@ -21,7 +21,7 @@ const AppWithContext = () => {
 	const [ singleMessage, setSingleMessage ] = useState(null);
 
 	const [ toDos, setToDos ] = useState([]);
-	const [ singleTodo, setSingleToDo ] = useState(null);
+	const [ singleToDo, setSingleToDo ] = useState(null);
 
 	const [ toDoItem, setToDoItem ] = useState([]);
 	const [ singleToDoItem, setSingleToDoItem ] = useState(null);
@@ -144,7 +144,7 @@ const AppWithContext = () => {
 				throw res;
 			}
 			const { toDo } = await res.json();
-			setSingleToDo(toDo);
+			// setSingleToDo(toDo);
 		} catch (err) {
 			console.error(err);
 		}
@@ -238,7 +238,7 @@ const AppWithContext = () => {
 				loadProjectToDos,
 				toDos,
 				setToDos,
-				singleTodo,
+				singleToDo,
 				loadSingleToDo,
 				toDoItem,
 				loadToDoItems,

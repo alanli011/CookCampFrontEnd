@@ -67,6 +67,7 @@ const MessageBoard = () => {
 				document.title = `${project.projectName} - Message Board`;
 			}
 		},
+		// eslint-disable-next-line
 		[ project, id ]
 	);
 

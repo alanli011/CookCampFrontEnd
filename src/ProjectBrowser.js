@@ -80,6 +80,7 @@ const ProjectBrowser = (props) => {
 				loadProjects();
 			}
 		},
+		// eslint-disable-next-line
 		[ authToken, projects.length ]
 	);
 
