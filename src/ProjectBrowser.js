@@ -80,6 +80,7 @@ const ProjectBrowser = (props) => {
 				loadProjects();
 			}
 		},
+		// eslint-disable-next-line
 		[ authToken, projects.length ]
 	);
 
@@ -106,16 +107,14 @@ const ProjectBrowser = (props) => {
 							</Button>
 						</Link>
 					</div>
-					<div className={classes.header}>
-						<h2>Projects</h2>
-					</div>
+					<Typography variant="h4">Projects</Typography>
 					<div />
 				</section>
 
 				<Grid container spacing={2} direction="row" justify="center" alignItems="flex-start">
 					{projects.map((project) => {
 						return (
-							<Grid className={classes.my} item key={project.id} xs={12} sm={6} md={4}>
+							<Grid item key={project.id} xs={12} sm={6} md={4}>
 								<NavLink className={classes.noUnderline} to={`/${authId}/projects/${project.id}`}>
 									<Card className={classes.card} variant="outlined">
 										<CardContent className={classes.cards}>

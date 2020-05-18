@@ -13,6 +13,8 @@ import MessageBoard from './MessageBoard';
 import MessageDetail from './MessageDetail';
 import ToDoList from './ToDoList';
 import NewMessage from './NewMessage';
+import ToDoItem from './ToDoItem';
+import NewToDoList from './NewToDoList';
 
 const App = (props) => {
 	const { authId, authToken } = useContext(CookContext);
@@ -21,6 +23,18 @@ const App = (props) => {
 			<Navigation />
 			<Switch>
 				<PrivateRoute exact path={`/${authId}/projects/:id/to_do`} component={ToDoList} authToken={authToken} />
+				<PrivateRoute
+					exact
+					path={`/${authId}/projects/:id/to_do/new`}
+					component={NewToDoList}
+					authToken={authToken}
+				/>
+				<PrivateRoute
+					exact
+					path={`/${authId}/projects/:id/to_do/:id`}
+					component={ToDoItem}
+					authToken={authToken}
+				/>
 				<PrivateRoute
 					exact
 					path={`/${authId}/projects/:id/message_board/message/:id`}

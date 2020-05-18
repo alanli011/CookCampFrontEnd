@@ -13,6 +13,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import Icon from '@material-ui/core/Icon';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -82,6 +84,9 @@ const Navigation = (props) => {
 			<AppBar className={classes.navbar} color="inherit" position="static">
 				<Toolbar className={classes.ToolBar}>
 					<Button href="/">
+						<Icon color="primary">
+							<AccountTreeIcon />
+						</Icon>
 						<Typography variant="h6">CookCamp</Typography>
 					</Button>
 					{auth && (
