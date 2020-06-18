@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import CookContext from './CookContext';
 import homepageImage from './images/homepage-demo.png';
-import staticImage from './images/CookCamp_Home.png';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -53,7 +52,6 @@ const Home = () => {
 					</Button>
 				</div>
 				<img className={classes.homePageImageStyle} src={homepageImage} alt="demo" />
-				<img className={classes.homePageImageStyle} src={staticImage} alt="static" />
 			</div>
 		</Container>
 	);
