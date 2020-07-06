@@ -15,6 +15,7 @@ import ToDoList from './ToDoList';
 import NewMessage from './NewMessage';
 import ToDoItem from './ToDoItem';
 import NewToDoList from './NewToDoList';
+import Footer from './Footer';
 
 const App = (props) => {
 	const { authId, authToken } = useContext(CookContext);
@@ -65,6 +66,7 @@ const App = (props) => {
 				<Route exact path="/login" component={Login} />
 				<Route exact path="/" component={Home} />
 			</Switch>
+			<Footer />
 		</BrowserRouter>
 	);
 };
