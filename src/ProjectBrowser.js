@@ -3,21 +3,16 @@ import { NavLink, Link } from 'react-router-dom';
 import CookContext from './CookContext';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
+import { Card, CardContent, Typography, Container, Grid, Button, Avatar, Divider } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme) => ({
 	centered: {
 		display: 'flex',
 		justifyContent: 'space-between',
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingBottom: theme.spacing(2)
 	},
 	root: {
 		flexGrow: 1,
@@ -68,6 +63,9 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: '15px',
 		height: '30px',
 		width: '30px'
+	},
+	gridMargin: {
+		marginTop: theme.spacing(3)
 	}
 }));
 
@@ -107,11 +105,19 @@ const ProjectBrowser = (props) => {
 							</Button>
 						</Link>
 					</div>
-					<Typography variant="h4">Projects</Typography>
+					<Typography variant="h3">Projects</Typography>
 					<div />
 				</section>
+				<Divider />
 
-				<Grid container spacing={2} direction="row" justify="center" alignItems="flex-start">
+				<Grid
+					container
+					spacing={2}
+					direction="row"
+					justify="center"
+					alignItems="flex-start"
+					className={classes.gridMargin}
+				>
 					{projects.map((project) => {
 						return (
 							<Grid item key={project.id} xs={12} sm={6} md={4}>

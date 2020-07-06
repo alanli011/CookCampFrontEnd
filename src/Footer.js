@@ -8,7 +8,8 @@ import LinkedInIcon from '@material-ui/icons/LinkedIn';
 const useStyles = makeStyles((theme) => ({
 	footer: {
 		padding: theme.spacing(3, 2),
-		backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800]
+		marginTop: theme.spacing(2),
+		backgroundColor: 'white'
 	},
 	content: {
 		display: 'flex',
