@@ -29,13 +29,29 @@ const useStyles = makeStyles((theme) => ({
 	},
 	submit: {
 		margin: theme.spacing(3, 0, 2)
+	},
+	error: {
+		color: 'red'
 	}
 }));
+
+const validate = (email, password) => {
+	const errorsArray = [];
+	if (!email) {
+		errorsArray.push('Please provide a valid email address.');
+	}
+
+	if (!password) {
+		errorsArray.push('Please provide a valid password');
+	}
+	return errorsArray;
+};
 
 const Login = () => {
 	const { authId, login, authToken } = useContext(CookContext);
 	const [ email, setEmail ] = useState('demoUser@demo.com');
 	const [ password, setPassword ] = useState('cooking');
+	const [ validationErrors, setValidationErrors ] = useState([]);
 
 	useEffect(() => {
 		document.title = 'CookCamp - Login';
@@ -43,6 +59,7 @@ const Login = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setValidationErrors(validate(email, password));
 		try {
 			const res = await fetch(`${baseUrl}/users/token`, {
 				method: 'POST',
@@ -52,6 +69,8 @@ const Login = () => {
 				}
 			});
 			if (!res.ok) {
+				const errors = await res.json();
+				setValidationErrors(errors.errors);
 				throw res;
 			}
 			const { token, user: { id } } = await res.json();
@@ -84,6 +103,12 @@ const Login = () => {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
+				{validationErrors.length > 0 && (
+					<div className={classes.error}>
+						The following errors were found:
+						<ul>{validationErrors.map((error) => <li key={error}>{error}</li>)}</ul>
+					</div>
+				)}
 				<form className={classes.form} noValidate onSubmit={handleSubmit}>
 					<TextField
 						variant="outlined"

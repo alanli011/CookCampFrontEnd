@@ -29,8 +29,35 @@ const useStyles = makeStyles((theme) => ({
 	},
 	submit: {
 		margin: theme.spacing(3, 0, 2)
+	},
+	error: {
+		color: 'red'
 	}
 }));
+
+const validate = (firstName, lastName, username, email, password) => {
+	let errorsArray = [];
+	if (!firstName) {
+		errorsArray.push('Please provide a First Name');
+	}
+
+	if (!lastName) {
+		errorsArray.push('Please provide a Last Name');
+	}
+
+	if (!username) {
+		errorsArray.push('Please provide a Username');
+	}
+
+	if (!email) {
+		errorsArray.push('Please provide a Email');
+	}
+
+	if (!password) {
+		errorsArray.push('Please provide a password');
+	}
+	return errorsArray;
+};
 
 const SignUp = () => {
 	const { authId, login, authToken } = useContext(CookContext);
@@ -39,6 +66,7 @@ const SignUp = () => {
 	const [ lastName, setlastName ] = useState('');
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
+	const [ validationErrors, setValidationErrors ] = useState([]);
 
 	useEffect(() => {
 		document.title = 'CookCamp - Sign Up';
@@ -46,6 +74,7 @@ const SignUp = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setValidationErrors(validate(firstName, lastName, userName, email, password));
 		try {
 			const res = await fetch(`${baseUrl}/users`, {
 				method: 'POST',
@@ -101,6 +130,12 @@ const SignUp = () => {
 				<Typography component="h1" variant="h5">
 					Sign up
 				</Typography>
+				{validationErrors.length > 0 && (
+					<div className={classes.error}>
+						The following errors were found:
+						<ul>{validationErrors.map((error) => <li key={error}>{error}</li>)}</ul>
+					</div>
+				)}
 				<form className={classes.form} noValidate onSubmit={handleSubmit}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={6}>
