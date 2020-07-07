@@ -75,6 +75,7 @@ const ToDoItem = () => {
 			}
 			const { item } = await res.json();
 			console.log(item);
+			console.log(singleToDoItem);
 			setSingleToDoItem([ ...singleToDoItem, item ]);
 			setOpen(false);
 		} catch (error) {

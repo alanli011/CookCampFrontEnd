@@ -24,7 +24,7 @@ const AppWithContext = () => {
 	const [ singleToDo, setSingleToDo ] = useState(null);
 
 	const [ toDoItem, setToDoItem ] = useState([]);
-	const [ singleToDoItem, setSingleToDoItem ] = useState(null);
+	const [ singleToDoItem, setSingleToDoItem ] = useState([]);
 
 	const login = (token, id) => {
 		window.localStorage.setItem('state-cookcamp-token', token);
@@ -244,6 +244,7 @@ const AppWithContext = () => {
 				toDoItem,
 				loadToDoItems,
 				singleToDoItem,
+				setSingleToDoItem,
 				loadSingleToDoItem
 			}}
 		>
