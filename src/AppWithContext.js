@@ -133,9 +133,9 @@ const AppWithContext = () => {
 		}
 	};
 
-	const loadSingleToDo = async (id) => {
+	const loadSingleToDo = async (id, toDoId) => {
 		try {
-			const res = await fetch(`${baseUrl}/projects/:id/to-do/${id}`, {
+			const res = await fetch(`${baseUrl}/projects/${id}/to-do/${toDoId}`, {
 				headers: {
 					Authorization: `Bearer ${authToken}`
 				}
@@ -144,7 +144,7 @@ const AppWithContext = () => {
 				throw res;
 			}
 			const { toDo } = await res.json();
-			// setSingleToDo(toDo);
+			setSingleToDo(toDo);
 		} catch (err) {
 			console.error(err);
 		}
@@ -170,10 +170,10 @@ const AppWithContext = () => {
 		}
 	};
 
-	const loadSingleToDoItem = async (id) => {
+	const loadSingleToDoItem = async (id, toDoId) => {
 		try {
 			if (!authId) return;
-			const res = await fetch(`${baseUrl}/projects/:id/to-do/item/${id}`, {
+			const res = await fetch(`${baseUrl}/projects/${id}/to-do/item/${toDoId}`, {
 				headers: {
 					Authorization: `Bearer ${authToken}`
 				}
@@ -184,6 +184,7 @@ const AppWithContext = () => {
 			}
 
 			const { item } = await res.json();
+			console.log(item);
 			setSingleToDoItem(item);
 		} catch (err) {
 			console.error(err);

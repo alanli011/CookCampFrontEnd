@@ -32,7 +32,7 @@ const App = (props) => {
 				/>
 				<PrivateRoute
 					exact
-					path={`/${authId}/projects/:id/to_do/:id`}
+					path={`/${authId}/projects/:id/to_do/:toDoId`}
 					component={ToDoItem}
 					authToken={authToken}
 				/>
