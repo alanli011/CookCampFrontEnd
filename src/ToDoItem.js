@@ -17,6 +17,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+// import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import AddIcon from '@material-ui/icons/Add';
 
@@ -27,10 +28,18 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: 'white',
 		marginTop: '20px',
 		borderRadius: '4px',
-		boxShadow: '1px 1px 5px lightgray, -1px -1px 5px lightgray'
+		boxShadow: '1px 1px 5px lightgray, -1px -1px 5px lightgray',
+		height: '100vh',
+		overflowY: 'auto'
 	},
 	spacing: {
 		padding: theme.spacing(6)
+	},
+	delete: {
+		color: 'red',
+		'&:hover': {
+			cursor: 'pointer'
+		}
 	}
 }));
 
@@ -80,6 +89,21 @@ const ToDoItem = () => {
 			console.error(error);
 		}
 	};
+
+	// const handleDelete = async (e) => {
+	// 	try {
+	// 		const res = await fetch(`${baseUrl}/projects/${id}/to-do/item/$${toDoId}/${e.target.id}`, {
+	// 			method: 'delete',
+	// 			headers: {
+	// 				'Content-Type': 'application/json'
+	// 			}
+	// 		});
+	// 		console.log(res);
+	// 		console.log(e.target.id);
+	// 	} catch (error) {
+	// 		console.error(error);
+	// 	}
+	// };
 
 	// const handleChange = (event) => {
 	// 	setChecked(event.currentTarget.checked);
@@ -149,6 +173,7 @@ const ToDoItem = () => {
 								<ListItem>
 									{/* <Checkbox checked={checked} onChange={handleChange} /> */}
 									<ListItemText primary={item.name} />
+									{/* <DeleteForeverIcon onClick={handleDelete} className={classes.delete} /> */}
 								</ListItem>
 							</List>
 						);
