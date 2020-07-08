@@ -184,7 +184,6 @@ const AppWithContext = () => {
 			}
 
 			const { item } = await res.json();
-			console.log(item);
 			setSingleToDoItem(item);
 		} catch (err) {
 			console.error(err);

@@ -27,8 +27,7 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: 'white',
 		marginTop: '20px',
 		borderRadius: '4px',
-		boxShadow: '1px 1px 5px lightgray, -1px -1px 5px lightgray',
-		height: '100vh'
+		boxShadow: '1px 1px 5px lightgray, -1px -1px 5px lightgray'
 	},
 	spacing: {
 		padding: theme.spacing(6)
@@ -74,10 +73,9 @@ const ToDoItem = () => {
 				throw res;
 			}
 			const { item } = await res.json();
-			console.log(item);
-			console.log(singleToDoItem);
 			setSingleToDoItem([ ...singleToDoItem, item ]);
 			setOpen(false);
+			setItemName('');
 		} catch (error) {
 			console.error(error);
 		}
@@ -100,7 +98,7 @@ const ToDoItem = () => {
 			}
 		},
 		// eslint-disable-next-line
-		[ toDo, id ]
+		[ toDo, id, singleToDoItem ]
 	);
 
 	const classes = useStyles();
