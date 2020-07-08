@@ -1,14 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CookContext from './CookContext';
+import { baseUrl } from './config';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import Avatar from '@material-ui/core/Avatar';
-import Divider from '@material-ui/core/Divider';
+import { Card, CardContent, Typography, Container, Avatar, Divider, TextField, Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -33,7 +29,16 @@ const useStyles = makeStyles((theme) => ({
 	},
 	descriptionStyles: {
 		paddingTop: theme.spacing(2),
-		marginBottom: theme.spacing(30)
+		marginBottom: theme.spacing(4)
+	},
+	card: {
+		marginBottom: theme.spacing(1)
+	},
+	leaveComment: {
+		display: 'flex',
+		width: '100%',
+		flexDirection: 'column',
+		marginTop: theme.spacing(3)
 	}
 }));
 
@@ -46,9 +51,41 @@ const MessageDetail = () => {
 		singleMessage: message,
 		loadOneProjectMessage,
 		loadMessageComments,
-		comments
+		comments,
+		setComments
 	} = useContext(CookContext);
 	const { projectId, messageId } = useParams();
+
+	const [ commentValue, setCommentValue ] = useState('');
+
+	const handleCommentChange = (e) => {
+		setCommentValue(e.target.value);
+	};
+
+	const handleCommentSubmit = async (e) => {
+		e.preventDefault();
+		try {
+			const res = await fetch(`${baseUrl}/projects/${projectId}/messages/${messageId}/comments`, {
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					commentText: commentValue,
+					messageId
+				})
+			});
+			if (!res.ok) {
+				throw res;
+			}
+
+			const { comment } = await res.json();
+			setComments([ comment, ...comments ]);
+			setCommentValue('');
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	useEffect(
 		() => {
@@ -87,13 +124,27 @@ const MessageDetail = () => {
 				{comments &&
 					comments.map((comment) => {
 						return (
-							<Card key={comment.id}>
+							<Card key={comment.id} className={classes.card}>
 								<CardContent>
 									<Typography variant="body1">{comment.commentText}</Typography>
 								</CardContent>
 							</Card>
 						);
 					})}
+				<div className={classes.leaveComment}>
+					<TextField
+						multiline
+						rows={6}
+						variant="outlined"
+						label="Comment"
+						placeholder="Leave a comment"
+						value={commentValue}
+						onChange={handleCommentChange}
+					/>
+					<Button type="submit" variant="contained" color="primary" onClick={handleCommentSubmit}>
+						Post
+					</Button>
+				</div>
 			</div>
 		</Container>
 	);
