@@ -17,7 +17,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-// import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import AddIcon from '@material-ui/icons/Add';
 
@@ -90,20 +90,22 @@ const ToDoItem = () => {
 		}
 	};
 
-	// const handleDelete = async (e) => {
-	// 	try {
-	// 		const res = await fetch(`${baseUrl}/projects/${id}/to-do/item/$${toDoId}/${e.target.id}`, {
-	// 			method: 'delete',
-	// 			headers: {
-	// 				'Content-Type': 'application/json'
-	// 			}
-	// 		});
-	// 		console.log(res);
-	// 		console.log(e.target.id);
-	// 	} catch (error) {
-	// 		console.error(error);
-	// 	}
-	// };
+	const handleDelete = async (id) => {
+		try {
+			const res = await fetch(`${baseUrl}/projects/${id}/to-do/item/${toDoId}/${id}`, {
+				method: 'delete',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			if (!res.ok) {
+				throw res;
+			}
+			setSingleToDoItem([ ...singleToDoItem.filter((item) => item.id !== id) ]);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	// const handleChange = (event) => {
 	// 	setChecked(event.currentTarget.checked);
@@ -170,10 +172,13 @@ const ToDoItem = () => {
 					singleToDoItem.map((item) => {
 						return (
 							<List key={item.id}>
-								<ListItem>
+								<ListItem id={item.id}>
 									{/* <Checkbox checked={checked} onChange={handleChange} /> */}
 									<ListItemText primary={item.name} />
-									{/* <DeleteForeverIcon onClick={handleDelete} className={classes.delete} /> */}
+									<DeleteForeverIcon
+										onClick={() => handleDelete(item.id)}
+										className={classes.delete}
+									/>
 								</ListItem>
 							</List>
 						);
