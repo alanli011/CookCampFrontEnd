@@ -17,6 +17,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Divider from '@material-ui/core/Divider';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import AddIcon from '@material-ui/icons/Add';
 
@@ -27,10 +29,18 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: 'white',
 		marginTop: '20px',
 		borderRadius: '4px',
-		boxShadow: '1px 1px 5px lightgray, -1px -1px 5px lightgray'
+		boxShadow: '1px 1px 5px lightgray, -1px -1px 5px lightgray',
+		height: '100vh',
+		overflowY: 'auto'
 	},
 	spacing: {
 		padding: theme.spacing(6)
+	},
+	delete: {
+		color: 'red',
+		'&:hover': {
+			cursor: 'pointer'
+		}
 	}
 }));
 
@@ -76,6 +86,23 @@ const ToDoItem = () => {
 			setSingleToDoItem([ ...singleToDoItem, item ]);
 			setOpen(false);
 			setItemName('');
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	const handleDelete = async (id) => {
+		try {
+			const res = await fetch(`${baseUrl}/projects/${id}/to-do/item/${toDoId}/${id}`, {
+				method: 'delete',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			if (!res.ok) {
+				throw res;
+			}
+			setSingleToDoItem([ ...singleToDoItem.filter((item) => item.id !== id) ]);
 		} catch (error) {
 			console.error(error);
 		}
@@ -146,10 +173,15 @@ const ToDoItem = () => {
 					singleToDoItem.map((item) => {
 						return (
 							<List key={item.id}>
-								<ListItem>
+								<ListItem id={item.id}>
 									{/* <Checkbox checked={checked} onChange={handleChange} /> */}
 									<ListItemText primary={item.name} />
+									<DeleteForeverIcon
+										onClick={() => handleDelete(item.id)}
+										className={classes.delete}
+									/>
 								</ListItem>
+								<Divider />
 							</List>
 						);
 					})}

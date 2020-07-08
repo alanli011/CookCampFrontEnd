@@ -20,6 +20,9 @@ const AppWithContext = () => {
 	const [ messages, setMessages ] = useState([]);
 	const [ singleMessage, setSingleMessage ] = useState(null);
 
+	const [ comments, setComments ] = useState([]);
+	const [ singleComment, setSingleComment ] = useState(null);
+
 	const [ toDos, setToDos ] = useState([]);
 	const [ singleToDo, setSingleToDo ] = useState(null);
 
@@ -110,6 +113,23 @@ const AppWithContext = () => {
 			setSingleMessage(message);
 		} catch (err) {
 			console.error(err);
+		}
+	};
+
+	const loadMessageComments = async (projectId, messageId) => {
+		try {
+			const res = await fetch(`${baseUrl}/projects/${projectId}/messages/${messageId}/comments`, {
+				headers: {
+					Authorization: `Bearer ${authToken}`
+				}
+			});
+			if (!res.ok) {
+				throw res;
+			}
+			const { comments } = await res.json();
+			setComments(comments);
+		} catch (error) {
+			console.error(error);
 		}
 	};
 
@@ -244,7 +264,12 @@ const AppWithContext = () => {
 				loadToDoItems,
 				singleToDoItem,
 				setSingleToDoItem,
-				loadSingleToDoItem
+				loadSingleToDoItem,
+				comments,
+				setComments,
+				loadMessageComments,
+				singleComment,
+				setSingleComment
 			}}
 		>
 			<App />
