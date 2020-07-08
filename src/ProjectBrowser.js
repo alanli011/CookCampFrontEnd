@@ -32,6 +32,13 @@ const useStyles = makeStyles((theme) => ({
 		minHeight: '150px',
 		display: 'flex'
 	},
+	newCard: {
+		maxWidth: '300px',
+		minHeight: '150px',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
 	addIconStyle: {
 		color: 'green'
 	},
@@ -118,6 +125,15 @@ const ProjectBrowser = (props) => {
 					alignItems="flex-start"
 					className={classes.gridMargin}
 				>
+					{projects.length === 0 && (
+						<Grid item xs={12} sm={6} md={4}>
+							<Link to={`/${authId}/projects/create-new`} className={classes.noUnderline}>
+								<Card className={classes.newCard} variant="outlined">
+									<Typography variant="h6">Create Your First Project!</Typography>
+								</Card>
+							</Link>
+						</Grid>
+					)}
 					{projects.map((project) => {
 						return (
 							<Grid item key={project.id} xs={12} sm={6} md={4}>
