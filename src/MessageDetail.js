@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import CookContext from './CookContext';
 
 import { makeStyles } from '@material-ui/core/styles';
-// import Card from '@material-ui/core/Card';
-// import CardContent from '@material-ui/core/CardContent';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
@@ -39,20 +39,30 @@ const useStyles = makeStyles((theme) => ({
 
 // will need to include the comments section
 const MessageDetail = () => {
-	const { user, firstInitial, lastInitial, singleMessage: message, loadOneProjectMessage } = useContext(CookContext);
-	const { id } = useParams();
+	const {
+		user,
+		firstInitial,
+		lastInitial,
+		singleMessage: message,
+		loadOneProjectMessage,
+		loadMessageComments,
+		comments
+	} = useContext(CookContext);
+	const { projectId, messageId } = useParams();
 
 	useEffect(
 		() => {
 			if (!message) {
-				loadOneProjectMessage(id);
-			} else if (message.id !== parseInt(id, 10)) {
-				loadOneProjectMessage(id);
+				loadOneProjectMessage(messageId);
+				loadMessageComments(projectId, messageId);
+			} else if (message.id !== parseInt(messageId, 10)) {
+				loadOneProjectMessage(messageId);
+				loadMessageComments(projectId, messageId);
 			} else {
 				document.title = message.name;
 			}
 		},
-		[ message, loadOneProjectMessage, id ]
+		[ message, loadOneProjectMessage, messageId, projectId, loadMessageComments ]
 	);
 
 	const classes = useStyles();
@@ -74,6 +84,16 @@ const MessageDetail = () => {
 				<Typography className={classes.descriptionStyles} variant="h6">
 					{message.description}
 				</Typography>
+				{comments &&
+					comments.map((comment) => {
+						return (
+							<Card key={comment.id}>
+								<CardContent>
+									<Typography variant="body1">{comment.commentText}</Typography>
+								</CardContent>
+							</Card>
+						);
+					})}
 			</div>
 		</Container>
 	);

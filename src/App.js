@@ -38,7 +38,7 @@ const App = (props) => {
 				/>
 				<PrivateRoute
 					exact
-					path={`/${authId}/projects/:id/message_board/message/:id`}
+					path={`/${authId}/projects/:projectId/message_board/message/:messageId`}
 					component={MessageDetail}
 					authToken={authToken}
 				/>
