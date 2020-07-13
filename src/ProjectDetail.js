@@ -51,7 +51,9 @@ const ProjectDetail = (props) => {
 		messages,
 		authId,
 		toDos,
-		loadProjectToDos
+		loadProjectToDos,
+		firstInitial,
+		lastInitial
 	} = useContext(CookContext);
 	const { id } = useParams();
 	const [ loaded, setLoaded ] = useState(false);
@@ -106,9 +108,7 @@ const ProjectDetail = (props) => {
 												<List key={message.id}>
 													<ListItem>
 														<ListItemAvatar>
-															<Avatar>
-																<FolderIcon />
-															</Avatar>
+															<Avatar>{`${firstInitial}${lastInitial}`}</Avatar>
 														</ListItemAvatar>
 														<ListItemText primary={message.name} />
 													</ListItem>
@@ -131,11 +131,6 @@ const ProjectDetail = (props) => {
 											return (
 												<List key={toDo.id}>
 													<ListItem>
-														<ListItemAvatar>
-															<Avatar>
-																<FolderIcon />
-															</Avatar>
-														</ListItemAvatar>
 														<ListItemText primary={toDo.name} />
 													</ListItem>
 													<Divider />
