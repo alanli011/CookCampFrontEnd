@@ -14,7 +14,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import FolderIcon from '@material-ui/icons/Folder';
 import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
