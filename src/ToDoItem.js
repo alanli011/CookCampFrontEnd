@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CookContext from './CookContext';
 import { baseUrl } from './config';
+import Loading from './Loading';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -51,6 +52,7 @@ const ToDoItem = () => {
 	// const [ checked, setChecked ] = React.useState(false);
 	const [ open, setOpen ] = useState(false);
 	const [ itemName, setItemName ] = useState('');
+	const [ loaded, setLoaded ] = useState(false);
 	const { id, toDoId } = useParams();
 
 	const handleClickOpen = () => {
@@ -114,6 +116,9 @@ const ToDoItem = () => {
 
 	useEffect(
 		() => {
+			setTimeout(() => {
+				setLoaded(true);
+			}, 1000);
 			if (!toDo) {
 				loadSingleToDo(id, toDoId);
 				loadSingleToDoItem(id, toDoId);
@@ -134,58 +139,61 @@ const ToDoItem = () => {
 
 	return (
 		<Container maxWidth="md" className={classes.root}>
-			<div className={classes.spacing}>
-				<Typography className={classes.titleStyles} variant="h4">
-					{toDo.name}
-				</Typography>
-				<Typography variant="body1">{toDo.description}</Typography>
-				<Button variant="contained" color="primary" onClick={handleClickOpen}>
-					<AddIcon />
-					Add Item
-				</Button>
-				<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-					<DialogTitle id="form-dialog-title">Add Item</DialogTitle>
-					<DialogContent>
-						<DialogContentText>
-							Add what you need to do this to do list to keep yourself on track!
-						</DialogContentText>
-						<TextField
-							autoFocus
-							margin="dense"
-							id="item"
-							label="Item"
-							type="text"
-							fullWidth
-							value={itemName}
-							onChange={handleItemNameChange}
-						/>
-					</DialogContent>
-					<DialogActions>
-						<Button onClick={handleClose} color="primary">
-							Cancel
-						</Button>
-						<Button type="submit" onClick={handleAddSubmit} color="primary">
-							Add
-						</Button>
-					</DialogActions>
-				</Dialog>
-				{singleToDoItem &&
-					singleToDoItem.map((item) => {
-						return (
-							<List key={item.id}>
-								<ListItem id={item.id}>
-									{/* <Checkbox checked={checked} onChange={handleChange} /> */}
-									<ListItemText primary={item.name} />
-									<DeleteForeverIcon
-										onClick={() => handleDelete(item.id)}
-										className={classes.delete}
-									/>
-								</ListItem>
-								<Divider />
-							</List>
-						);
-					})}
-			</div>
+			{!loaded && <Loading />}
+			{loaded && (
+				<div className={classes.spacing}>
+					<Typography className={classes.titleStyles} variant="h4">
+						{toDo.name}
+					</Typography>
+					<Typography variant="body1">{toDo.description}</Typography>
+					<Button variant="contained" color="primary" onClick={handleClickOpen}>
+						<AddIcon />
+						Add Item
+					</Button>
+					<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+						<DialogTitle id="form-dialog-title">Add Item</DialogTitle>
+						<DialogContent>
+							<DialogContentText>
+								Add what you need to do this to do list to keep yourself on track!
+							</DialogContentText>
+							<TextField
+								autoFocus
+								margin="dense"
+								id="item"
+								label="Item"
+								type="text"
+								fullWidth
+								value={itemName}
+								onChange={handleItemNameChange}
+							/>
+						</DialogContent>
+						<DialogActions>
+							<Button onClick={handleClose} color="primary">
+								Cancel
+							</Button>
+							<Button type="submit" onClick={handleAddSubmit} color="primary">
+								Add
+							</Button>
+						</DialogActions>
+					</Dialog>
+					{singleToDoItem &&
+						singleToDoItem.map((item) => {
+							return (
+								<List key={item.id}>
+									<ListItem id={item.id}>
+										{/* <Checkbox checked={checked} onChange={handleChange} /> */}
+										<ListItemText primary={item.name} />
+										<DeleteForeverIcon
+											onClick={() => handleDelete(item.id)}
+											className={classes.delete}
+										/>
+									</ListItem>
+									<Divider />
+								</List>
+							);
+						})}
+				</div>
+			)}
 		</Container>
 	);
 };
