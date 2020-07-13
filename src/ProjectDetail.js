@@ -1,6 +1,7 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams, NavLink } from 'react-router-dom';
 import CookContext from './CookContext';
+import Loading from './Loading';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -53,6 +54,7 @@ const ProjectDetail = (props) => {
 		loadProjectToDos
 	} = useContext(CookContext);
 	const { id } = useParams();
+	const [ loaded, setLoaded ] = useState(false);
 
 	useEffect(
 		() => {
@@ -60,10 +62,12 @@ const ProjectDetail = (props) => {
 				loadOneProject(id);
 				loadProjectMessages(id);
 				loadProjectToDos(id);
+				setLoaded(true);
 			} else if (project.id !== parseInt(id, 10)) {
 				loadOneProject(id);
 				loadProjectMessages(id);
 				loadProjectToDos(id);
+				setLoaded(true);
 			} else {
 				document.title = project.projectName;
 			}
@@ -77,70 +81,73 @@ const ProjectDetail = (props) => {
 
 	return (
 		<main>
-			<Container maxWidth="md" className={classes.root}>
-				<section className={classes.centered}>
-					<Typography align="center" variant="h4">
-						{project.projectName}
-					</Typography>
-					<Typography align="center" variant="h5">
-						{project.projectDescription}
-					</Typography>
-				</section>
-				<Grid container spacing={3}>
-					<Grid item xs={6}>
-						<NavLink className={classes.noUnderline} to={`/${authId}/projects/${id}/message_board`}>
-							<Card>
-								<CardContent>
-									<Typography className={classes.cardTextStyles} align="center" variant="h6">
-										Message Board
-									</Typography>
-									{messages.map((message) => {
-										return (
-											<List key={message.id}>
-												<ListItem>
-													<ListItemAvatar>
-														<Avatar>
-															<FolderIcon />
-														</Avatar>
-													</ListItemAvatar>
-													<ListItemText primary={message.name} />
-												</ListItem>
-												<Divider />
-											</List>
-										);
-									})}
-								</CardContent>
-							</Card>
-						</NavLink>
+			{!loaded && <Loading />}
+			{loaded && (
+				<Container maxWidth="md" className={classes.root}>
+					<section className={classes.centered}>
+						<Typography align="center" variant="h4">
+							{project.projectName}
+						</Typography>
+						<Typography align="center" variant="h5">
+							{project.projectDescription}
+						</Typography>
+					</section>
+					<Grid container spacing={3}>
+						<Grid item xs={6}>
+							<NavLink className={classes.noUnderline} to={`/${authId}/projects/${id}/message_board`}>
+								<Card>
+									<CardContent>
+										<Typography className={classes.cardTextStyles} align="center" variant="h6">
+											Message Board
+										</Typography>
+										{messages.map((message) => {
+											return (
+												<List key={message.id}>
+													<ListItem>
+														<ListItemAvatar>
+															<Avatar>
+																<FolderIcon />
+															</Avatar>
+														</ListItemAvatar>
+														<ListItemText primary={message.name} />
+													</ListItem>
+													<Divider />
+												</List>
+											);
+										})}
+									</CardContent>
+								</Card>
+							</NavLink>
+						</Grid>
+						<Grid item xs={6}>
+							<NavLink className={classes.noUnderline} to={`/${authId}/projects/${id}/to_do`}>
+								<Card>
+									<CardContent>
+										<Typography className={classes.cardTextStyles} align="center" variant="h6">
+											To Do
+										</Typography>
+										{toDos.map((toDo) => {
+											return (
+												<List key={toDo.id}>
+													<ListItem>
+														<ListItemAvatar>
+															<Avatar>
+																<FolderIcon />
+															</Avatar>
+														</ListItemAvatar>
+														<ListItemText primary={toDo.name} />
+													</ListItem>
+													<Divider />
+												</List>
+											);
+										})}
+									</CardContent>
+								</Card>
+							</NavLink>
+						</Grid>
 					</Grid>
-					<Grid item xs={6}>
-						<NavLink className={classes.noUnderline} to={`/${authId}/projects/${id}/to_do`}>
-							<Card>
-								<CardContent>
-									<Typography className={classes.cardTextStyles} align="center" variant="h6">
-										To Do
-									</Typography>
-									{toDos.map((toDo) => {
-										return (
-											<List key={toDo.id}>
-												<ListItem>
-													<ListItemAvatar>
-														<Avatar>
-															<FolderIcon />
-														</Avatar>
-													</ListItemAvatar>
-													<ListItemText primary={toDo.name} />
-												</ListItem>
-												<Divider />
-											</List>
-										);
-									})}
-								</CardContent>
-							</Card>
-						</NavLink>
-					</Grid>
-				</Grid>
-			</Container>
+				</Container>
+			)}
 		</main>
 	);
 };

@@ -1,6 +1,7 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import CookContext from './CookContext';
+import Loading from './Loading';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Typography, Container, Grid, Button, Avatar, Divider } from '@material-ui/core';
@@ -78,9 +79,13 @@ const useStyles = makeStyles((theme) => ({
 
 const ProjectBrowser = (props) => {
 	const { authToken, authId, projects, loadProjects, firstInitial, lastInitial } = useContext(CookContext);
+	const [ loaded, setLoaded ] = useState(false);
 
 	useEffect(
 		() => {
+			setTimeout(() => {
+				setLoaded(true);
+			}, 1000);
 			if (projects.length === 0) {
 				loadProjects();
 			}
@@ -97,69 +102,74 @@ const ProjectBrowser = (props) => {
 
 	return (
 		<main>
-			<Container maxWidth="md" className={classes.root}>
-				<section className={classes.centered}>
-					<div>
-						<Link to={`/${authId}/projects/create-new`} className={classes.noUnderline}>
-							<Button
-								className={classes.buttonStyles}
-								type="button"
-								size="small"
-								color="default"
-								variant="contained"
-							>
-								<AddIcon className={classes.addIconStyle} /> New
-							</Button>
-						</Link>
-					</div>
-					<Typography variant="h3">Projects</Typography>
-					<div />
-				</section>
-				<Divider />
-
-				<Grid
-					container
-					spacing={2}
-					direction="row"
-					justify="center"
-					alignItems="flex-start"
-					className={classes.gridMargin}
-				>
-					{projects.length === 0 && (
-						<Grid item xs={12} sm={6} md={4}>
+			{!loaded && <Loading />}
+			{loaded && (
+				<Container maxWidth="md" className={classes.root}>
+					<section className={classes.centered}>
+						<div>
 							<Link to={`/${authId}/projects/create-new`} className={classes.noUnderline}>
-								<Card className={classes.newCard} variant="outlined">
-									<Typography variant="h6">Create Your First Project!</Typography>
-								</Card>
+								<Button
+									className={classes.buttonStyles}
+									type="button"
+									size="small"
+									color="default"
+									variant="contained"
+								>
+									<AddIcon className={classes.addIconStyle} /> New
+								</Button>
 							</Link>
-						</Grid>
-					)}
-					{projects.map((project) => {
-						return (
-							<Grid item key={project.id} xs={12} sm={6} md={4}>
-								<NavLink className={classes.noUnderline} to={`/${authId}/projects/${project.id}`}>
-									<Card className={classes.card} variant="outlined">
-										<CardContent className={classes.cards}>
-											<div>
-												<Typography className={classes.title}>{project.projectName}</Typography>
-											</div>
-											<div>
-												<Typography component="p" variant="body2">
-													{project.projectDescription}
-												</Typography>
-											</div>
+						</div>
+						<Typography variant="h3">Projects</Typography>
+						<div />
+					</section>
+					<Divider />
 
-											<Avatar
-												className={classes.avatarSize}
-											>{`${firstInitial}${lastInitial}`}</Avatar>
-										</CardContent>
+					<Grid
+						container
+						spacing={2}
+						direction="row"
+						justify="center"
+						alignItems="flex-start"
+						className={classes.gridMargin}
+					>
+						{projects.length === 0 && (
+							<Grid item xs={12} sm={6} md={4}>
+								<Link to={`/${authId}/projects/create-new`} className={classes.noUnderline}>
+									<Card className={classes.newCard} variant="outlined">
+										<Typography variant="h6">Create Your First Project!</Typography>
 									</Card>
-								</NavLink>
+								</Link>
 							</Grid>
-						);
-					})}
-				</Grid>
-			</Container>
+						)}
+						{projects.map((project) => {
+							return (
+								<Grid item key={project.id} xs={12} sm={6} md={4}>
+									<NavLink className={classes.noUnderline} to={`/${authId}/projects/${project.id}`}>
+										<Card className={classes.card} variant="outlined">
+											<CardContent className={classes.cards}>
+												<div>
+													<Typography className={classes.title}>
+														{project.projectName}
+													</Typography>
+												</div>
+												<div>
+													<Typography component="p" variant="body2">
+														{project.projectDescription}
+													</Typography>
+												</div>
+
+												<Avatar
+													className={classes.avatarSize}
+												>{`${firstInitial}${lastInitial}`}</Avatar>
+											</CardContent>
+										</Card>
+									</NavLink>
+								</Grid>
+							);
+						})}
+					</Grid>
+				</Container>
+			)}
 		</main>
 	);
 };
