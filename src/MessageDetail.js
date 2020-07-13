@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CookContext from './CookContext';
 import { baseUrl } from './config';
+import Loading from './Loading';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Typography, Container, Avatar, Divider, TextField, Button } from '@material-ui/core';
@@ -57,6 +58,7 @@ const MessageDetail = () => {
 	const { projectId, messageId } = useParams();
 
 	const [ commentValue, setCommentValue ] = useState('');
+	const [ loaded, setLoaded ] = useState(false);
 
 	const handleCommentChange = (e) => {
 		setCommentValue(e.target.value);
@@ -92,9 +94,11 @@ const MessageDetail = () => {
 			if (!message) {
 				loadOneProjectMessage(messageId);
 				loadMessageComments(projectId, messageId);
+				setLoaded(true);
 			} else if (message.id !== parseInt(messageId, 10)) {
 				loadOneProjectMessage(messageId);
 				loadMessageComments(projectId, messageId);
+				setLoaded(true);
 			} else {
 				document.title = message.name;
 			}
@@ -108,44 +112,47 @@ const MessageDetail = () => {
 
 	return (
 		<Container maxWidth="md" className={classes.root}>
-			<div className={classes.spacing}>
-				<Typography className={classes.titleStyles} variant="h4">
-					{message.name}
-				</Typography>
-				<Divider />
-				<div className={classes.messageUserStyle}>
-					<Avatar>{`${firstInitial}${lastInitial}`}</Avatar>
-					<Typography variant="h6">{user.userName}</Typography>
+			{!loaded && <Loading />}
+			{loaded && (
+				<div className={classes.spacing}>
+					<Typography className={classes.titleStyles} variant="h4">
+						{message.name}
+					</Typography>
+					<Divider />
+					<div className={classes.messageUserStyle}>
+						<Avatar>{`${firstInitial}${lastInitial}`}</Avatar>
+						<Typography variant="h6">{user.userName}</Typography>
+					</div>
+					<Divider />
+					<Typography className={classes.descriptionStyles} variant="h6">
+						{message.description}
+					</Typography>
+					{comments &&
+						comments.map((comment) => {
+							return (
+								<Card key={comment.id} className={classes.card}>
+									<CardContent>
+										<Typography variant="body1">{comment.commentText}</Typography>
+									</CardContent>
+								</Card>
+							);
+						})}
+					<div className={classes.leaveComment}>
+						<TextField
+							multiline
+							rows={6}
+							variant="outlined"
+							label="Comment"
+							placeholder="Leave a comment"
+							value={commentValue}
+							onChange={handleCommentChange}
+						/>
+						<Button type="submit" variant="contained" color="primary" onClick={handleCommentSubmit}>
+							Post
+						</Button>
+					</div>
 				</div>
-				<Divider />
-				<Typography className={classes.descriptionStyles} variant="h6">
-					{message.description}
-				</Typography>
-				{comments &&
-					comments.map((comment) => {
-						return (
-							<Card key={comment.id} className={classes.card}>
-								<CardContent>
-									<Typography variant="body1">{comment.commentText}</Typography>
-								</CardContent>
-							</Card>
-						);
-					})}
-				<div className={classes.leaveComment}>
-					<TextField
-						multiline
-						rows={6}
-						variant="outlined"
-						label="Comment"
-						placeholder="Leave a comment"
-						value={commentValue}
-						onChange={handleCommentChange}
-					/>
-					<Button type="submit" variant="contained" color="primary" onClick={handleCommentSubmit}>
-						Post
-					</Button>
-				</div>
-			</div>
+			)}
 		</Container>
 	);
 };
