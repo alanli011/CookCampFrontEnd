@@ -1,6 +1,7 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import CookContext from './CookContext';
+import Loading from './Loading';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -56,9 +57,13 @@ const MessageBoard = () => {
 		CookContext
 	);
 	const { id } = useParams();
+	const [ loaded, setLoaded ] = useState(false);
 
 	useEffect(
 		() => {
+			setTimeout(() => {
+				setLoaded(true);
+			}, 1000);
 			if (!project) {
 				loadProjectMessages(id);
 			} else if (project.id !== parseInt(id, 10)) {
@@ -75,39 +80,45 @@ const MessageBoard = () => {
 
 	return (
 		<main>
-			<Container maxWidth="md" className={classes.root}>
-				<section className={classes.header}>
-					<Link to={`/${authId}/projects/${id}/messsage_board/message/new`} className={classes.noUnderline}>
-						<Button type="button" size="small" variant="contained" className={classes.newMessageButton}>
-							<AddIcon className={classes.addIconStyle} />
-							New Message
-						</Button>
-					</Link>
-					<Typography variant="h4">Message Board</Typography>
-					<Box className={classes.boxStyle}>
-						<Typography>All Messages</Typography>
-					</Box>
-				</section>
-				{messages.map((message) => {
-					return (
+			{!loaded && <Loading />}
+			{loaded && (
+				<Container maxWidth="md" className={classes.root}>
+					<section className={classes.header}>
 						<Link
-							to={`/${authId}/projects/${id}/message_board/message/${message.id}`}
+							to={`/${authId}/projects/${id}/messsage_board/message/new`}
 							className={classes.noUnderline}
-							key={message.id}
 						>
-							<List>
-								<ListItem>
-									<ListItemAvatar>
-										<Avatar>{`${firstInitial}${lastInitial}`}</Avatar>
-									</ListItemAvatar>
-									<ListItemText primary={message.name} />
-								</ListItem>
-								<Divider />
-							</List>
+							<Button type="button" size="small" variant="contained" className={classes.newMessageButton}>
+								<AddIcon className={classes.addIconStyle} />
+								New Message
+							</Button>
 						</Link>
-					);
-				})}
-			</Container>
+						<Typography variant="h4">Notes Board</Typography>
+						<Box className={classes.boxStyle}>
+							<Typography>All Messages</Typography>
+						</Box>
+					</section>
+					{messages.map((message) => {
+						return (
+							<Link
+								to={`/${authId}/projects/${id}/message_board/message/${message.id}`}
+								className={classes.noUnderline}
+								key={message.id}
+							>
+								<List>
+									<ListItem>
+										<ListItemAvatar>
+											<Avatar>{`${firstInitial}${lastInitial}`}</Avatar>
+										</ListItemAvatar>
+										<ListItemText primary={message.name} />
+									</ListItem>
+									<Divider />
+								</List>
+							</Link>
+						);
+					})}
+				</Container>
+			)}
 		</main>
 	);
 };

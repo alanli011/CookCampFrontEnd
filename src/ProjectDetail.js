@@ -58,16 +58,17 @@ const ProjectDetail = (props) => {
 
 	useEffect(
 		() => {
+			setTimeout(() => {
+				setLoaded(true);
+			}, 1000);
 			if (!project) {
 				loadOneProject(id);
 				loadProjectMessages(id);
 				loadProjectToDos(id);
-				setLoaded(true);
 			} else if (project.id !== parseInt(id, 10)) {
 				loadOneProject(id);
 				loadProjectMessages(id);
 				loadProjectToDos(id);
-				setLoaded(true);
 			} else {
 				document.title = project.projectName;
 			}
@@ -98,7 +99,7 @@ const ProjectDetail = (props) => {
 								<Card>
 									<CardContent>
 										<Typography className={classes.cardTextStyles} align="center" variant="h6">
-											Message Board
+											Notes Board
 										</Typography>
 										{messages.map((message) => {
 											return (
