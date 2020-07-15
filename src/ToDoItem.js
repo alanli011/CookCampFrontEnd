@@ -7,7 +7,7 @@ import Loading from './Loading';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-// import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox from '@material-ui/core/Checkbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -49,7 +49,7 @@ const ToDoItem = () => {
 	const { singleToDo: toDo, loadSingleToDo, loadSingleToDoItem, singleToDoItem, setSingleToDoItem } = useContext(
 		CookContext
 	);
-	// const [ checked, setChecked ] = React.useState(false);
+	const [ checked, setChecked ] = useState(null);
 	const [ open, setOpen ] = useState(false);
 	const [ itemName, setItemName ] = useState('');
 	const [ loaded, setLoaded ] = useState(false);
@@ -110,9 +110,29 @@ const ToDoItem = () => {
 		}
 	};
 
-	// const handleChange = (event) => {
-	// 	setChecked(event.currentTarget.checked);
-	// };
+	const handleCheck = async (event, itemId) => {
+		event.persist();
+		try {
+			const res = await fetch(`${baseUrl}/projects/${id}/to-do/item/${toDoId}/${itemId}`, {
+				method: 'put',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					completed: event.target.checked
+				})
+			});
+			if (!res.ok) {
+				throw res;
+			}
+			const { item } = await res.json();
+			console.log(item);
+			console.log(event.target);
+			setChecked({ ...checked, [event.target.name]: item.completed });
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	useEffect(
 		() => {
@@ -122,9 +142,12 @@ const ToDoItem = () => {
 			if (!toDo) {
 				loadSingleToDo(id, toDoId);
 				loadSingleToDoItem(id, toDoId);
+				setChecked(singleToDoItem.completed);
+				console.log(singleToDoItem);
 			} else if (toDo.id !== parseInt(toDoId, 10)) {
 				loadSingleToDo(id, toDoId);
 				loadSingleToDoItem(id, toDoId);
+				setChecked(singleToDoItem.completed);
 			} else {
 				document.title = toDo.name;
 			}
@@ -177,11 +200,15 @@ const ToDoItem = () => {
 						</DialogActions>
 					</Dialog>
 					{singleToDoItem &&
-						singleToDoItem.map((item) => {
+						singleToDoItem.map((item, i) => {
 							return (
-								<List key={item.id}>
+								<List key={i}>
 									<ListItem id={item.id}>
-										{/* <Checkbox checked={checked} onChange={handleChange} /> */}
+										<Checkbox
+											checked={checked}
+											onChange={(e) => handleCheck(e, item.id)}
+											name={item.name}
+										/>
 										<ListItemText primary={item.name} />
 										<DeleteForeverIcon
 											onClick={() => handleDelete(item.id)}
