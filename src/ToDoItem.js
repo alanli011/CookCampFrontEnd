@@ -114,8 +114,8 @@ const ToDoItem = () => {
 	const handleCheck = async (event, itemId) => {
 		// console.log(event.target.id);
 		// console.log('item', itemId);
-		setChecked({ ...checked, [`Item-${itemId}`]: event.target.checked });
-		// event.persist();
+		// setChecked({ ...checked, [`Item-${itemId}`]: event.target.checked });
+		event.persist();
 		try {
 			const res = await fetch(`${baseUrl}/projects/${id}/to-do/item/${toDoId}/${itemId}`, {
 				method: 'put',
@@ -129,8 +129,9 @@ const ToDoItem = () => {
 			if (!res.ok) {
 				throw res;
 			}
-			// const { item } = await res.json();
-			// setChecked({ ...checked, [`Item-${item.id}`]: event.target.checked });
+			const { item } = await res.json();
+			// setSingleToDoItem([ ...singleToDoItem, item ]);
+			setChecked({ ...checked, [`Item-${item.id}`]: item.completed });
 		} catch (error) {
 			console.error(error);
 		}
