@@ -29,6 +29,8 @@ const AppWithContext = () => {
 	const [ toDoItem, setToDoItem ] = useState([]);
 	const [ singleToDoItem, setSingleToDoItem ] = useState([]);
 
+	const [ toDoItemList, setToDoItemList ] = useState({});
+
 	const login = (token, id) => {
 		window.localStorage.setItem('state-cookcamp-token', token);
 		window.localStorage.setItem('state-cookcamp-id', id);
@@ -210,6 +212,24 @@ const AppWithContext = () => {
 		}
 	};
 
+	const loadToDoItem = async (id, toDoId, itemId) => {
+		try {
+			if (!authId) return;
+			const res = await fetch(`${baseUrl}/projects/${id}/to-do/item/${toDoId}/${itemId}`, {
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			if (!res.ok) {
+				throw res;
+			}
+			const { item } = await res.json();
+			setToDoItemList(item);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	useEffect(
 		() => {
 			if (authId) {
@@ -269,7 +289,10 @@ const AppWithContext = () => {
 				setComments,
 				loadMessageComments,
 				singleComment,
-				setSingleComment
+				setSingleComment,
+				loadToDoItem,
+				toDoItemList,
+				setToDoItemList
 			}}
 		>
 			<App />

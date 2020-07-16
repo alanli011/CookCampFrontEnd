@@ -20,6 +20,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import AddIcon from '@material-ui/icons/Add';
 
@@ -49,7 +50,7 @@ const ToDoItem = () => {
 	const { singleToDo: toDo, loadSingleToDo, loadSingleToDoItem, singleToDoItem, setSingleToDoItem } = useContext(
 		CookContext
 	);
-	const [ checked, setChecked ] = useState(null);
+	const [ checked, setChecked ] = useState({});
 	const [ open, setOpen ] = useState(false);
 	const [ itemName, setItemName ] = useState('');
 	const [ loaded, setLoaded ] = useState(false);
@@ -111,7 +112,10 @@ const ToDoItem = () => {
 	};
 
 	const handleCheck = async (event, itemId) => {
-		event.persist();
+		// console.log(event.target.id);
+		// console.log('item', itemId);
+		setChecked({ ...checked, [`Item-${itemId}`]: event.target.checked });
+		// event.persist();
 		try {
 			const res = await fetch(`${baseUrl}/projects/${id}/to-do/item/${toDoId}/${itemId}`, {
 				method: 'put',
@@ -125,10 +129,8 @@ const ToDoItem = () => {
 			if (!res.ok) {
 				throw res;
 			}
-			const { item } = await res.json();
-			console.log(item);
-			console.log(event.target);
-			setChecked({ ...checked, [event.target.name]: item.completed });
+			// const { item } = await res.json();
+			// setChecked({ ...checked, [`Item-${item.id}`]: event.target.checked });
 		} catch (error) {
 			console.error(error);
 		}
@@ -142,18 +144,26 @@ const ToDoItem = () => {
 			if (!toDo) {
 				loadSingleToDo(id, toDoId);
 				loadSingleToDoItem(id, toDoId);
-				setChecked(singleToDoItem.completed);
-				console.log(singleToDoItem);
 			} else if (toDo.id !== parseInt(toDoId, 10)) {
 				loadSingleToDo(id, toDoId);
 				loadSingleToDoItem(id, toDoId);
-				setChecked(singleToDoItem.completed);
 			} else {
 				document.title = toDo.name;
 			}
 		},
 		// eslint-disable-next-line
 		[ toDo, id, singleToDoItem ]
+	);
+
+	useEffect(
+		() => {
+			if (singleToDoItem) {
+				singleToDoItem.map((item) =>
+					setChecked(Object.assign(checked, { [`Item-${item.id}`]: item.completed }))
+				);
+			}
+		},
+		[ singleToDoItem, checked ]
 	);
 
 	const classes = useStyles();
@@ -203,11 +213,16 @@ const ToDoItem = () => {
 						singleToDoItem.map((item, i) => {
 							return (
 								<List key={i}>
-									<ListItem id={item.id}>
-										<Checkbox
-											checked={checked}
-											onChange={(e) => handleCheck(e, item.id)}
-											name={item.name}
+									<ListItem id={`to-do-item-${item.id}`}>
+										<FormControlLabel
+											control={
+												<Checkbox
+													id={`${item.id}`}
+													checked={checked[`Item-${item.id}`]}
+													onChange={(e) => handleCheck(e, item.id)}
+													name={item.name}
+												/>
+											}
 										/>
 										<ListItemText primary={item.name} />
 										<DeleteForeverIcon
