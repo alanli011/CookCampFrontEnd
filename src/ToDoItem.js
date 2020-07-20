@@ -18,9 +18,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Divider from '@material-ui/core/Divider';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import AddIcon from '@material-ui/icons/Add';
 
@@ -111,10 +109,10 @@ const ToDoItem = () => {
 		}
 	};
 
-	const handleCheck = async (event, itemId) => {
-		// console.log(event.target.id);
+	const handleCheck = async (event) => {
+		let itemId = Number(event.target.id);
+		console.log(Number(event.target.id));
 		// console.log('item', itemId);
-		// setChecked({ ...checked, [`Item-${itemId}`]: event.target.checked });
 		event.persist();
 		try {
 			const res = await fetch(`${baseUrl}/projects/${id}/to-do/item/${toDoId}/${itemId}`, {
@@ -132,6 +130,7 @@ const ToDoItem = () => {
 			const { item } = await res.json();
 			// setSingleToDoItem([ ...singleToDoItem, item ]);
 			setChecked({ ...checked, [`Item-${item.id}`]: item.completed });
+			console.log(checked);
 		} catch (error) {
 			console.error(error);
 		}
@@ -166,6 +165,8 @@ const ToDoItem = () => {
 		},
 		[ singleToDoItem, checked ]
 	);
+
+	console.log(checked);
 
 	const classes = useStyles();
 
@@ -210,20 +211,17 @@ const ToDoItem = () => {
 							</Button>
 						</DialogActions>
 					</Dialog>
-					{singleToDoItem &&
-						singleToDoItem.map((item, i) => {
-							return (
-								<List key={i}>
-									<ListItem id={`to-do-item-${item.id}`}>
-										<FormControlLabel
-											control={
-												<Checkbox
-													id={`${item.id}`}
-													checked={checked[`Item-${item.id}`]}
-													onChange={(e) => handleCheck(e, item.id)}
-													name={item.name}
-												/>
-											}
+					<List>
+						{singleToDoItem &&
+							singleToDoItem.map((item, i) => {
+								return (
+									<ListItem key={i}>
+										<Checkbox
+											id={`${item.id}`}
+											checked={checked[`Item-${item.id}`]}
+											// onChange={() => handleCheck(item.id)}
+											onChange={handleCheck}
+											name={item.name}
 										/>
 										<ListItemText primary={item.name} />
 										<DeleteForeverIcon
@@ -231,10 +229,10 @@ const ToDoItem = () => {
 											className={classes.delete}
 										/>
 									</ListItem>
-									<Divider />
-								</List>
-							);
-						})}
+									// <Divider />
+								);
+							})}
+					</List>
 				</div>
 			)}
 		</Container>
