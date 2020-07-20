@@ -109,9 +109,11 @@ const ToDoItem = () => {
 		}
 	};
 
-	const handleCheck = async (event) => {
-		let itemId = Number(event.target.id);
-		console.log(Number(event.target.id));
+	const handleCheck = async (event, itemId) => {
+		// debugger;
+		// let itemId = Number(event.target.id);
+		// console.log(Number(event.target.id));
+		// console.log(event.target.checked);
 		// console.log('item', itemId);
 		event.persist();
 		try {
@@ -127,9 +129,12 @@ const ToDoItem = () => {
 			if (!res.ok) {
 				throw res;
 			}
+			// debugger;
 			const { item } = await res.json();
-			// setSingleToDoItem([ ...singleToDoItem, item ]);
-			setChecked({ ...checked, [`Item-${item.id}`]: item.completed });
+
+			setChecked({ [event.target.name]: item.completed });
+			// debugger;
+			// setChecked({ ...checked, [`Item-${item.id}`]: event.target.checked });
 			console.log(checked);
 		} catch (error) {
 			console.error(error);
@@ -220,8 +225,8 @@ const ToDoItem = () => {
 											id={`${item.id}`}
 											checked={checked[`Item-${item.id}`]}
 											// onChange={() => handleCheck(item.id)}
-											onChange={handleCheck}
-											name={item.name}
+											onClick={(e) => handleCheck(e, item.id)}
+											name={`Item-${item.id}`}
 										/>
 										<ListItemText primary={item.name} />
 										<DeleteForeverIcon
