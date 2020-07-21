@@ -7,7 +7,7 @@ import Loading from './Loading';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-// import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox from '@material-ui/core/Checkbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -18,7 +18,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Divider from '@material-ui/core/Divider';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -49,7 +48,7 @@ const ToDoItem = () => {
 	const { singleToDo: toDo, loadSingleToDo, loadSingleToDoItem, singleToDoItem, setSingleToDoItem } = useContext(
 		CookContext
 	);
-	// const [ checked, setChecked ] = React.useState(false);
+	const [ checked, setChecked ] = useState([]);
 	const [ open, setOpen ] = useState(false);
 	const [ itemName, setItemName ] = useState('');
 	const [ loaded, setLoaded ] = useState(false);
@@ -110,9 +109,31 @@ const ToDoItem = () => {
 		}
 	};
 
-	// const handleChange = (event) => {
-	// 	setChecked(event.currentTarget.checked);
-	// };
+	const handleCheck = async (event, idx, itemId) => {
+		let newChecked = [ ...checked ];
+		try {
+			const res = await fetch(`${baseUrl}/projects/${id}/to-do/item/${toDoId}/${itemId}`, {
+				method: 'put',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					completed: event.target.checked
+				})
+			});
+			if (!res.ok) {
+				throw res;
+			}
+			// debugger;
+			const { item } = await res.json();
+
+			newChecked.splice(idx, 1, item.completed);
+
+			setChecked(newChecked);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	useEffect(
 		() => {
@@ -132,6 +153,24 @@ const ToDoItem = () => {
 		// eslint-disable-next-line
 		[ toDo, id, singleToDoItem ]
 	);
+
+	useEffect(
+		() => {
+			if (singleToDoItem) {
+				let newChecked = [ ...checked ];
+				singleToDoItem.map((item) =>
+					// setChecked(Object.assign(checked, { [`Item-${item.id}`]: item.completed }))
+					// newChecked.push({ [item.id]: item.completed })
+					newChecked.push(item.completed)
+				);
+				setChecked(newChecked);
+			}
+		},
+		// eslint-disable-next-line
+		[ singleToDoItem ]
+	);
+
+	// console.log(checked);
 
 	const classes = useStyles();
 
@@ -176,22 +215,28 @@ const ToDoItem = () => {
 							</Button>
 						</DialogActions>
 					</Dialog>
-					{singleToDoItem &&
-						singleToDoItem.map((item) => {
-							return (
-								<List key={item.id}>
-									<ListItem id={item.id}>
-										{/* <Checkbox checked={checked} onChange={handleChange} /> */}
+					<List>
+						{singleToDoItem &&
+							singleToDoItem.map((item, i) => {
+								return (
+									<ListItem key={i}>
+										<Checkbox
+											id={`${item.id}`}
+											checked={checked[i]}
+											// onChange={() => handleCheck(item.id)}
+											onClick={(e) => handleCheck(e, i, item.id)}
+											name={`Item-${item.id}`}
+										/>
 										<ListItemText primary={item.name} />
 										<DeleteForeverIcon
 											onClick={() => handleDelete(item.id)}
 											className={classes.delete}
 										/>
 									</ListItem>
-									<Divider />
-								</List>
-							);
-						})}
+									// <Divider />
+								);
+							})}
+					</List>
 				</div>
 			)}
 		</Container>
