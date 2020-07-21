@@ -48,7 +48,7 @@ const ToDoItem = () => {
 	const { singleToDo: toDo, loadSingleToDo, loadSingleToDoItem, singleToDoItem, setSingleToDoItem } = useContext(
 		CookContext
 	);
-	const [ checked, setChecked ] = useState({});
+	const [ checked, setChecked ] = useState([]);
 	const [ open, setOpen ] = useState(false);
 	const [ itemName, setItemName ] = useState('');
 	const [ loaded, setLoaded ] = useState(false);
@@ -109,13 +109,8 @@ const ToDoItem = () => {
 		}
 	};
 
-	const handleCheck = async (event, itemId) => {
-		// debugger;
-		// let itemId = Number(event.target.id);
-		// console.log(Number(event.target.id));
-		// console.log(event.target.checked);
-		// console.log('item', itemId);
-		event.persist();
+	const handleCheck = async (event, idx, itemId) => {
+		let newChecked = [ ...checked ];
 		try {
 			const res = await fetch(`${baseUrl}/projects/${id}/to-do/item/${toDoId}/${itemId}`, {
 				method: 'put',
@@ -132,10 +127,9 @@ const ToDoItem = () => {
 			// debugger;
 			const { item } = await res.json();
 
-			setChecked({ [event.target.name]: item.completed });
-			// debugger;
-			// setChecked({ ...checked, [`Item-${item.id}`]: event.target.checked });
-			console.log(checked);
+			newChecked.splice(idx, 1, item.completed);
+
+			setChecked(newChecked);
 		} catch (error) {
 			console.error(error);
 		}
@@ -163,15 +157,20 @@ const ToDoItem = () => {
 	useEffect(
 		() => {
 			if (singleToDoItem) {
+				let newChecked = [ ...checked ];
 				singleToDoItem.map((item) =>
-					setChecked(Object.assign(checked, { [`Item-${item.id}`]: item.completed }))
+					// setChecked(Object.assign(checked, { [`Item-${item.id}`]: item.completed }))
+					// newChecked.push({ [item.id]: item.completed })
+					newChecked.push(item.completed)
 				);
+				setChecked(newChecked);
 			}
 		},
-		[ singleToDoItem, checked ]
+		// eslint-disable-next-line
+		[ singleToDoItem ]
 	);
 
-	console.log(checked);
+	// console.log(checked);
 
 	const classes = useStyles();
 
@@ -223,9 +222,9 @@ const ToDoItem = () => {
 									<ListItem key={i}>
 										<Checkbox
 											id={`${item.id}`}
-											checked={checked[`Item-${item.id}`]}
+											checked={checked[i]}
 											// onChange={() => handleCheck(item.id)}
-											onClick={(e) => handleCheck(e, item.id)}
+											onClick={(e) => handleCheck(e, i, item.id)}
 											name={`Item-${item.id}`}
 										/>
 										<ListItemText primary={item.name} />
