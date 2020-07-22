@@ -15,6 +15,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -67,6 +68,22 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
+const ActiveLastBreadcrumb = (props) => {
+	return (
+		<Breadcrumbs area-label="breadcrumb">
+			<Link color="inherit" to={`/${props.authId}/projects`}>
+				Home
+			</Link>
+			<Link color="inherit" to={`/${props.authId}/projects/${props.projectId}`}>
+				Project
+			</Link>
+			<Link color="inherit" to="#">
+				To Do List
+			</Link>
+		</Breadcrumbs>
+	);
+};
+
 const ToDoList = (props) => {
 	const { authId, loadProjectToDos, toDos, singleProject: project } = useContext(CookContext);
 	const [ checked, setChecked ] = React.useState(false);
@@ -95,6 +112,7 @@ const ToDoList = (props) => {
 	return (
 		<main>
 			<Container maxWidth="md" className={classes.root}>
+				<ActiveLastBreadcrumb authId={authId} projectId={id} />
 				<section className={classes.header}>
 					<Link to={`/${authId}/projects/${id}/to_do/new`} className={classes.noUnderline}>
 						<Button type="button" size="small" variant="contained" className={classes.newMessageButton}>

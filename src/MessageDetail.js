@@ -65,7 +65,7 @@ const ActiveLastBreadcrumb = (props) => {
 			<Link color="inherit" to={`/${props.authId}/projects/${props.projectId}/message_board`}>
 				Notes Board
 			</Link>
-			<Link color="textPrimary" aria-current="page">
+			<Link color="textPrimary" aria-current="page" to="#">
 				Notes
 			</Link>
 		</Breadcrumbs>

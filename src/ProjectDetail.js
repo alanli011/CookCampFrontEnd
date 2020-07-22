@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams, NavLink } from 'react-router-dom';
+import { useParams, NavLink, Link } from 'react-router-dom';
 import CookContext from './CookContext';
 import Loading from './Loading';
 
@@ -15,6 +15,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Divider from '@material-ui/core/Divider';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -41,6 +42,19 @@ const useStyles = makeStyles((theme) => ({
 		textDecoration: 'none'
 	}
 }));
+
+const ActiveLastBreadcrumb = (props) => {
+	return (
+		<Breadcrumbs area-label="breadcrumb">
+			<Link color="inherit" to={`/${props.authId}/projects`}>
+				Home
+			</Link>
+			<Link color="inherit" to="#">
+				Project
+			</Link>
+		</Breadcrumbs>
+	);
+};
 
 const ProjectDetail = (props) => {
 	const {
@@ -86,6 +100,7 @@ const ProjectDetail = (props) => {
 			{!loaded && <Loading />}
 			{loaded && (
 				<Container maxWidth="md" className={classes.root}>
+					<ActiveLastBreadcrumb authId={authId} />
 					<section className={classes.centered}>
 						<Typography align="center" variant="h4">
 							{project.projectName}

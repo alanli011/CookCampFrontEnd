@@ -15,6 +15,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Divider from '@material-ui/core/Divider';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -52,6 +53,22 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
+const ActiveLastBreadcrumb = (props) => {
+	return (
+		<Breadcrumbs area-label="breadcrumb">
+			<Link color="inherit" to={`/${props.authId}/projects`}>
+				Home
+			</Link>
+			<Link color="inherit" to={`/${props.authId}/projects/${props.projectId}`}>
+				Project
+			</Link>
+			<Link color="inherit" to="#">
+				Notes Board
+			</Link>
+		</Breadcrumbs>
+	);
+};
+
 const MessageBoard = () => {
 	const { authId, singleProject: project, messages, loadProjectMessages, firstInitial, lastInitial } = useContext(
 		CookContext
@@ -83,6 +100,7 @@ const MessageBoard = () => {
 			{!loaded && <Loading />}
 			{loaded && (
 				<Container maxWidth="md" className={classes.root}>
+					<ActiveLastBreadcrumb authId={authId} projectId={id} />
 					<section className={classes.header}>
 						<Link
 							to={`/${authId}/projects/${id}/messsage_board/message/new`}
@@ -90,12 +108,12 @@ const MessageBoard = () => {
 						>
 							<Button type="button" size="small" variant="contained" className={classes.newMessageButton}>
 								<AddIcon className={classes.addIconStyle} />
-								New Message
+								New Note
 							</Button>
 						</Link>
 						<Typography variant="h4">Notes Board</Typography>
 						<Box className={classes.boxStyle}>
-							<Typography>All Messages</Typography>
+							<Typography>All Notess</Typography>
 						</Box>
 					</section>
 					{messages.map((message) => {
