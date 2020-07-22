@@ -1,11 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import CookContext from './CookContext';
 import { baseUrl } from './config';
 import Loading from './Loading';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, CardContent, Typography, Container, Avatar, Divider, TextField, Button } from '@material-ui/core';
+import {
+	Card,
+	CardContent,
+	Typography,
+	Container,
+	Avatar,
+	Divider,
+	TextField,
+	Button,
+	Breadcrumbs
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -43,9 +53,29 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
+const ActiveLastBreadcrumb = (props) => {
+	return (
+		<Breadcrumbs area-label="breadcrumb">
+			<Link color="inherit" to={`/${props.authId}/projects`}>
+				Home
+			</Link>
+			<Link color="inherit" to={`/${props.authId}/projects/${props.projectId}`}>
+				Project
+			</Link>
+			<Link color="inherit" to={`/${props.authId}/projects/${props.projectId}/message_board`}>
+				Notes Board
+			</Link>
+			<Link color="textPrimary" aria-current="page" to="#">
+				Notes
+			</Link>
+		</Breadcrumbs>
+	);
+};
+
 // will need to include the comments section
 const MessageDetail = () => {
 	const {
+		authId,
 		user,
 		firstInitial,
 		lastInitial,
@@ -114,44 +144,47 @@ const MessageDetail = () => {
 		<Container maxWidth="md" className={classes.root}>
 			{!loaded && <Loading />}
 			{loaded && (
-				<div className={classes.spacing}>
-					<Typography className={classes.titleStyles} variant="h4">
-						{message.name}
-					</Typography>
-					<Divider />
-					<div className={classes.messageUserStyle}>
-						<Avatar>{`${firstInitial}${lastInitial}`}</Avatar>
-						<Typography variant="h6">{user.userName}</Typography>
+				<React.Fragment>
+					<ActiveLastBreadcrumb authId={authId} projectId={projectId} />
+					<div className={classes.spacing}>
+						<Typography className={classes.titleStyles} variant="h4">
+							{message.name}
+						</Typography>
+						<Divider />
+						<div className={classes.messageUserStyle}>
+							<Avatar>{`${firstInitial}${lastInitial}`}</Avatar>
+							<Typography variant="h6">{user.userName}</Typography>
+						</div>
+						<Divider />
+						<Typography className={classes.descriptionStyles} variant="h6">
+							{message.description}
+						</Typography>
+						{comments &&
+							comments.map((comment) => {
+								return (
+									<Card key={comment.id} className={classes.card}>
+										<CardContent>
+											<Typography variant="body1">{comment.commentText}</Typography>
+										</CardContent>
+									</Card>
+								);
+							})}
+						<div className={classes.leaveComment}>
+							<TextField
+								multiline
+								rows={6}
+								variant="outlined"
+								label="Comment"
+								placeholder="Leave a comment"
+								value={commentValue}
+								onChange={handleCommentChange}
+							/>
+							<Button type="submit" variant="contained" color="primary" onClick={handleCommentSubmit}>
+								Post
+							</Button>
+						</div>
 					</div>
-					<Divider />
-					<Typography className={classes.descriptionStyles} variant="h6">
-						{message.description}
-					</Typography>
-					{comments &&
-						comments.map((comment) => {
-							return (
-								<Card key={comment.id} className={classes.card}>
-									<CardContent>
-										<Typography variant="body1">{comment.commentText}</Typography>
-									</CardContent>
-								</Card>
-							);
-						})}
-					<div className={classes.leaveComment}>
-						<TextField
-							multiline
-							rows={6}
-							variant="outlined"
-							label="Comment"
-							placeholder="Leave a comment"
-							value={commentValue}
-							onChange={handleCommentChange}
-						/>
-						<Button type="submit" variant="contained" color="primary" onClick={handleCommentSubmit}>
-							Post
-						</Button>
-					</div>
-				</div>
+				</React.Fragment>
 			)}
 		</Container>
 	);
