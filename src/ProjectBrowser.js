@@ -17,7 +17,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	root: {
 		flexGrow: 1,
-		padding: theme.spacing(2)
+		padding: theme.spacing(2),
+		backgroundColor: 'white',
+		borderRadius: '10px'
 	},
 	title: {
 		fontSize: 14
@@ -74,6 +76,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 	gridMargin: {
 		marginTop: theme.spacing(3)
+	},
+	mainBackground: {
+		backgroundImage:
+			"url('https://images.unsplash.com/31/RpgvvtYAQeqAIs1knERU_vegetables.jpg?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1054&q=80')",
+		backgroundRepeat: 'no-repeat',
+		backgroundSize: 'cover',
+		height: '100%'
 	}
 }));
 
@@ -101,7 +110,7 @@ const ProjectBrowser = (props) => {
 	const classes = useStyles();
 
 	return (
-		<main>
+		<main className={classes.mainBackground}>
 			{!loaded && <Loading />}
 			{loaded && (
 				<Container maxWidth="md" className={classes.root}>
