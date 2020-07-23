@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 		padding: theme.spacing(2),
 		backgroundColor: 'white',
-		marginTop: '20px',
 		borderRadius: '4px',
 		boxShadow: '1px 1px 5px lightgray, -1px -1px 5px lightgray',
 		height: '100vh'
@@ -65,6 +64,13 @@ const useStyles = makeStyles((theme) => ({
 	innerList: {
 		display: 'flex',
 		flexDirection: 'column'
+	},
+	mainBackground: {
+		backgroundImage:
+			"url('https://images.unsplash.com/photo-1516594798947-e65505dbb29d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80')",
+		backgroundRepeat: 'no-repeat',
+		backgroundSize: 'cover',
+		height: '100%'
 	}
 }));
 
@@ -110,7 +116,7 @@ const ToDoList = (props) => {
 	const classes = useStyles();
 
 	return (
-		<main>
+		<main className={classes.mainBackground}>
 			<Container maxWidth="md" className={classes.root}>
 				<ActiveLastBreadcrumb authId={authId} projectId={id} />
 				<section className={classes.header}>
