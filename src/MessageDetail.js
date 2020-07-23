@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
 		height: '100vh',
-		marginTop: '20px',
 		backgroundColor: 'white',
 		boxShadow: '1px 1px 5px lightgray, -1px -1px 5px lightgray;'
 	},
@@ -50,6 +49,13 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 		flexDirection: 'column',
 		marginTop: theme.spacing(3)
+	},
+	mainBackground: {
+		backgroundImage:
+			"url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1335&q=80')",
+		backgroundRepeat: 'no-repeat',
+		backgroundSize: 'cover',
+		height: '100%'
 	}
 }));
 
@@ -141,52 +147,54 @@ const MessageDetail = () => {
 	if (!message) return null;
 
 	return (
-		<Container maxWidth="md" className={classes.root}>
-			{!loaded && <Loading />}
-			{loaded && (
-				<React.Fragment>
-					<ActiveLastBreadcrumb authId={authId} projectId={projectId} />
-					<div className={classes.spacing}>
-						<Typography className={classes.titleStyles} variant="h4">
-							{message.name}
-						</Typography>
-						<Divider />
-						<div className={classes.messageUserStyle}>
-							<Avatar>{`${firstInitial}${lastInitial}`}</Avatar>
-							<Typography variant="h6">{user.userName}</Typography>
+		<main className={classes.mainBackground}>
+			<Container maxWidth="md" className={classes.root}>
+				{!loaded && <Loading />}
+				{loaded && (
+					<React.Fragment>
+						<ActiveLastBreadcrumb authId={authId} projectId={projectId} />
+						<div className={classes.spacing}>
+							<Typography className={classes.titleStyles} variant="h4">
+								{message.name}
+							</Typography>
+							<Divider />
+							<div className={classes.messageUserStyle}>
+								<Avatar>{`${firstInitial}${lastInitial}`}</Avatar>
+								<Typography variant="h6">{user.userName}</Typography>
+							</div>
+							<Divider />
+							<Typography className={classes.descriptionStyles} variant="h6">
+								{message.description}
+							</Typography>
+							{comments &&
+								comments.map((comment) => {
+									return (
+										<Card key={comment.id} className={classes.card}>
+											<CardContent>
+												<Typography variant="body1">{comment.commentText}</Typography>
+											</CardContent>
+										</Card>
+									);
+								})}
+							<div className={classes.leaveComment}>
+								<TextField
+									multiline
+									rows={6}
+									variant="outlined"
+									label="Comment"
+									placeholder="Leave a comment"
+									value={commentValue}
+									onChange={handleCommentChange}
+								/>
+								<Button type="submit" variant="contained" color="primary" onClick={handleCommentSubmit}>
+									Post
+								</Button>
+							</div>
 						</div>
-						<Divider />
-						<Typography className={classes.descriptionStyles} variant="h6">
-							{message.description}
-						</Typography>
-						{comments &&
-							comments.map((comment) => {
-								return (
-									<Card key={comment.id} className={classes.card}>
-										<CardContent>
-											<Typography variant="body1">{comment.commentText}</Typography>
-										</CardContent>
-									</Card>
-								);
-							})}
-						<div className={classes.leaveComment}>
-							<TextField
-								multiline
-								rows={6}
-								variant="outlined"
-								label="Comment"
-								placeholder="Leave a comment"
-								value={commentValue}
-								onChange={handleCommentChange}
-							/>
-							<Button type="submit" variant="contained" color="primary" onClick={handleCommentSubmit}>
-								Post
-							</Button>
-						</div>
-					</div>
-				</React.Fragment>
-			)}
-		</Container>
+					</React.Fragment>
+				)}
+			</Container>
+		</main>
 	);
 };
 
