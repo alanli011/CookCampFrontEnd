@@ -50,6 +50,13 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: '30px',
 		padding: '5px 10px',
 		cursor: 'not-allowed'
+	},
+	mainBackground: {
+		backgroundImage:
+			"url('https://images.unsplash.com/photo-1452948491233-ad8a1ed01085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1053&q=80')",
+		backgroundRepeat: 'no-repeat',
+		backgroundSize: 'cover',
+		height: '100%'
 	}
 }));
 
@@ -96,7 +103,7 @@ const MessageBoard = () => {
 	const classes = useStyles();
 
 	return (
-		<main>
+		<main className={classes.mainBackground}>
 			{!loaded && <Loading />}
 			{loaded && (
 				<Container maxWidth="md" className={classes.root}>
