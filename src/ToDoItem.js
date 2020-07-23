@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 		padding: theme.spacing(2),
 		backgroundColor: 'white',
-		marginTop: '20px',
 		borderRadius: '4px',
 		boxShadow: '1px 1px 5px lightgray, -1px -1px 5px lightgray',
 		height: '100vh',
@@ -42,6 +41,13 @@ const useStyles = makeStyles((theme) => ({
 		'&:hover': {
 			cursor: 'pointer'
 		}
+	},
+	mainBackground: {
+		backgroundImage:
+			"url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80')",
+		backgroundRepeat: 'no-repeat',
+		backgroundSize: 'cover',
+		height: '100%'
 	}
 }));
 
@@ -200,71 +206,73 @@ const ToDoItem = () => {
 	if (!toDo) return null;
 
 	return (
-		<Container maxWidth="md" className={classes.root}>
-			{!loaded && <Loading />}
-			{loaded && (
-				<React.Fragment>
-					<ActiveLastBreadcrumb authId={authId} projectId={id} />
-					<div className={classes.spacing}>
-						<Typography className={classes.titleStyles} variant="h4">
-							{toDo.name}
-						</Typography>
-						<Typography variant="body1">{toDo.description}</Typography>
-						<Button variant="contained" color="primary" onClick={handleClickOpen}>
-							<AddIcon />
-							Add Item
-						</Button>
-						<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-							<DialogTitle id="form-dialog-title">Add Item</DialogTitle>
-							<DialogContent>
-								<DialogContentText>
-									Add what you need to do this to do list to keep yourself on track!
-								</DialogContentText>
-								<TextField
-									autoFocus
-									margin="dense"
-									id="item"
-									label="Item"
-									type="text"
-									fullWidth
-									value={itemName}
-									onChange={handleItemNameChange}
-								/>
-							</DialogContent>
-							<DialogActions>
-								<Button onClick={handleClose} color="primary">
-									Cancel
-								</Button>
-								<Button type="submit" onClick={handleAddSubmit} color="primary">
-									Add
-								</Button>
-							</DialogActions>
-						</Dialog>
-						<List>
-							{singleToDoItem &&
-								singleToDoItem.map((item, i) => {
-									return (
-										<ListItem key={i}>
-											<Checkbox
-												id={`${item.id}`}
-												checked={checked[i]}
-												onClick={(e) => handleCheck(e, i, item.id)}
-												name={`Item-${item.id}`}
-											/>
-											<ListItemText primary={item.name} />
-											<DeleteForeverIcon
-												onClick={() => handleDelete(item.id)}
-												className={classes.delete}
-											/>
-										</ListItem>
-										// <Divider />
-									);
-								})}
-						</List>
-					</div>
-				</React.Fragment>
-			)}
-		</Container>
+		<main className={classes.mainBackground}>
+			<Container maxWidth="md" className={classes.root}>
+				{!loaded && <Loading />}
+				{loaded && (
+					<React.Fragment>
+						<ActiveLastBreadcrumb authId={authId} projectId={id} />
+						<div className={classes.spacing}>
+							<Typography className={classes.titleStyles} variant="h4">
+								{toDo.name}
+							</Typography>
+							<Typography variant="body1">{toDo.description}</Typography>
+							<Button variant="contained" color="primary" onClick={handleClickOpen}>
+								<AddIcon />
+								Add Item
+							</Button>
+							<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+								<DialogTitle id="form-dialog-title">Add Item</DialogTitle>
+								<DialogContent>
+									<DialogContentText>
+										Add what you need to do this to do list to keep yourself on track!
+									</DialogContentText>
+									<TextField
+										autoFocus
+										margin="dense"
+										id="item"
+										label="Item"
+										type="text"
+										fullWidth
+										value={itemName}
+										onChange={handleItemNameChange}
+									/>
+								</DialogContent>
+								<DialogActions>
+									<Button onClick={handleClose} color="primary">
+										Cancel
+									</Button>
+									<Button type="submit" onClick={handleAddSubmit} color="primary">
+										Add
+									</Button>
+								</DialogActions>
+							</Dialog>
+							<List>
+								{singleToDoItem &&
+									singleToDoItem.map((item, i) => {
+										return (
+											<ListItem key={i}>
+												<Checkbox
+													id={`${item.id}`}
+													checked={checked[i]}
+													onClick={(e) => handleCheck(e, i, item.id)}
+													name={`Item-${item.id}`}
+												/>
+												<ListItemText primary={item.name} />
+												<DeleteForeverIcon
+													onClick={() => handleDelete(item.id)}
+													className={classes.delete}
+												/>
+											</ListItem>
+											// <Divider />
+										);
+									})}
+							</List>
+						</div>
+					</React.Fragment>
+				)}
+			</Container>
+		</main>
 	);
 };
 
