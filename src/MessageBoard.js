@@ -120,7 +120,7 @@ const MessageBoard = () => {
 						</Link>
 						<Typography variant="h4">Notes Board</Typography>
 						<Box className={classes.boxStyle}>
-							<Typography>All Notess</Typography>
+							<Typography>All Notes</Typography>
 						</Box>
 					</section>
 					{messages.map((message) => {
