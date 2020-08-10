@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+// use material ui function to create custom styling for this component
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		marginTop: theme.spacing(8),
@@ -35,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
+// helper function to validate email and password. if there is an error, it will push the error to the array to be rendered
 const validate = (email, password) => {
 	const errorsArray = [];
 	if (!email) {
@@ -48,17 +50,26 @@ const validate = (email, password) => {
 };
 
 const Login = () => {
+	// grab the context variables from the provider
 	const { authId, login, authToken } = useContext(CookContext);
+
+	// set the default state of the login field for demo user
 	const [ email, setEmail ] = useState('demoUser@demo.com');
 	const [ password, setPassword ] = useState('cooking');
+
+	// set the default validation error state
 	const [ validationErrors, setValidationErrors ] = useState([]);
 
+	// set the browser tab title
 	useEffect(() => {
 		document.title = 'CookCamp - Login';
 	}, []);
 
+	// function to handle the submit button for this login form. will stop the default function of a submit button
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
+		// set the validation error state with the validate helper function passed in
 		setValidationErrors(validate(email, password));
 		try {
 			const res = await fetch(`${baseUrl}/users/token`, {
@@ -80,16 +91,19 @@ const Login = () => {
 		}
 	};
 
+	// function to set the state for the email field
 	const updateEmail = (e) => {
 		setEmail(e.target.value);
 	};
 
+	// function to set the state for the password field
 	const updatePassword = (e) => {
 		setPassword(e.target.value);
 	};
 
 	const classes = useStyles();
 
+	// if the authToken and authid is avaiable, then redirect user to their projects
 	if (authToken && authId) {
 		return <Redirect to={`/${authId}/projects`} />;
 	}
@@ -103,6 +117,7 @@ const Login = () => {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
+				{/* if the validation errors state is not empty, then loop over and display the errors as a list */}
 				{validationErrors.length > 0 && (
 					<div className={classes.error}>
 						The following errors were found:
