@@ -59,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
+// function to set the breadcrumbs
 const ActiveLastBreadcrumb = (props) => {
 	return (
 		<Breadcrumbs area-label="breadcrumb">
@@ -80,6 +81,7 @@ const ActiveLastBreadcrumb = (props) => {
 
 // will need to include the comments section
 const MessageDetail = () => {
+	// grab the variables from the context provider to be used
 	const {
 		authId,
 		user,
@@ -91,17 +93,27 @@ const MessageDetail = () => {
 		comments,
 		setComments
 	} = useContext(CookContext);
+
+	// get projectId and messageid from the params
 	const { projectId, messageId } = useParams();
 
+	// set the default state of the comment
 	const [ commentValue, setCommentValue ] = useState('');
+
+	// set the default state of the loaded
 	const [ loaded, setLoaded ] = useState(false);
 
+	// function to handle the comment textfield
 	const handleCommentChange = (e) => {
 		setCommentValue(e.target.value);
 	};
 
+	// function to post a comment
 	const handleCommentSubmit = async (e) => {
+		// set the default of the submit button to prevent the default
 		e.preventDefault();
+
+		// try / catch. if it succeeds, set the new state and the spread the old state
 		try {
 			const res = await fetch(`${baseUrl}/projects/${projectId}/messages/${messageId}/comments`, {
 				method: 'post',
@@ -119,12 +131,14 @@ const MessageDetail = () => {
 
 			const { comment } = await res.json();
 			setComments([ comment, ...comments ]);
+			// set the comment field back to default
 			setCommentValue('');
 		} catch (error) {
 			console.error(error);
 		}
 	};
 
+	// this useEffect will monitor the state of the messages
 	useEffect(
 		() => {
 			if (!message) {

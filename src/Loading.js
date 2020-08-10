@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
+// function to render material ui loading icon
 function Loading(props) {
 	const classes = useStyles();
 	return (

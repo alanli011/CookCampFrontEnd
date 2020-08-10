@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
+// function to validate all the required fields to sign up
 const validate = (firstName, lastName, username, email, password) => {
 	let errorsArray = [];
 	if (!firstName) {

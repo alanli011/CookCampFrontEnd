@@ -4,33 +4,43 @@ import CookContext from './CookContext';
 import { baseUrl } from './config';
 
 const AppWithContext = () => {
+	// grab the token and tokenid from the localstorage upon sucessful login/signup
 	const localStorageToken = localStorage.getItem('state-cookcamp-token');
 	const localStorageTokenId = localStorage.getItem('state-cookcamp-id');
 
+	// setting default token and authId
 	const [ authToken, setAuthToken ] = useState(localStorageToken);
 	const [ authId, setAuthId ] = useState(localStorageTokenId);
 
+	// state management for user
 	const [ user, setUser ] = useState('');
 	const [ firstInitial, setFirstInitial ] = useState('');
 	const [ lastInitial, setLastInitial ] = useState('');
 
+	// state management for projects
 	const [ projects, setProjects ] = useState([]);
 	const [ singleProject, setSingleProject ] = useState(null);
 
+	// state management for the messages/notes
 	const [ messages, setMessages ] = useState([]);
 	const [ singleMessage, setSingleMessage ] = useState(null);
 
+	// state management for comments
 	const [ comments, setComments ] = useState([]);
 	const [ singleComment, setSingleComment ] = useState(null);
 
+	// state management for toDos
 	const [ toDos, setToDos ] = useState([]);
 	const [ singleToDo, setSingleToDo ] = useState(null);
 
+	// state management for toDoitem
 	const [ toDoItem, setToDoItem ] = useState([]);
 	const [ singleToDoItem, setSingleToDoItem ] = useState([]);
 
+	// state management for a list of to do items
 	const [ toDoItemList, setToDoItemList ] = useState({});
 
+	// function to handle the login and provides the context for the rest of the application
 	const login = (token, id) => {
 		window.localStorage.setItem('state-cookcamp-token', token);
 		window.localStorage.setItem('state-cookcamp-id', id);
@@ -38,6 +48,7 @@ const AppWithContext = () => {
 		setAuthToken(token);
 	};
 
+	// function to handle the logout by removing from localstorage and setting the state back to null
 	const logout = () => {
 		window.localStorage.removeItem('state-cookcamp-token');
 		window.localStorage.removeItem('state-cookcamp-id');
@@ -45,6 +56,7 @@ const AppWithContext = () => {
 		setAuthId(null);
 	};
 
+	// async function to handle get all the projects for a specific user and setting the project state
 	const loadProjects = async () => {
 		try {
 			if (!authId) return;
@@ -64,6 +76,7 @@ const AppWithContext = () => {
 		}
 	};
 
+	// async function to handle get one specific project for that one user and setting the state of a single project
 	const loadOneProject = async (id) => {
 		try {
 			const res = await fetch(`${baseUrl}/projects/${id}`, {
@@ -81,6 +94,7 @@ const AppWithContext = () => {
 		}
 	};
 
+	// async function to handle getting all the messages/notes for the specific project and user
 	const loadProjectMessages = async (id) => {
 		try {
 			if (!authId) return;
@@ -101,6 +115,7 @@ const AppWithContext = () => {
 		}
 	};
 
+	// async function to handle getting one message/note for the specific project and user
 	const loadOneProjectMessage = async (id) => {
 		try {
 			const res = await fetch(`${baseUrl}/projects/:id/messages/${id}`, {
@@ -118,6 +133,7 @@ const AppWithContext = () => {
 		}
 	};
 
+	// async function that handles getting all the comments for that one messageboard/noteboard
 	const loadMessageComments = async (projectId, messageId) => {
 		try {
 			const res = await fetch(`${baseUrl}/projects/${projectId}/messages/${messageId}/comments`, {
@@ -135,6 +151,7 @@ const AppWithContext = () => {
 		}
 	};
 
+	// async function to get all the ToDos and set the state
 	const loadProjectToDos = async (id) => {
 		try {
 			if (!authId) return;
@@ -155,6 +172,7 @@ const AppWithContext = () => {
 		}
 	};
 
+	// async function to the to do list and set the state with the object returned
 	const loadSingleToDo = async (id, toDoId) => {
 		try {
 			const res = await fetch(`${baseUrl}/projects/${id}/to-do/${toDoId}`, {
@@ -172,6 +190,7 @@ const AppWithContext = () => {
 		}
 	};
 
+	// aync function get all the items and set the state. should return an array
 	const loadToDoItems = async (id) => {
 		try {
 			if (!authId) return;
@@ -192,6 +211,7 @@ const AppWithContext = () => {
 		}
 	};
 
+	//
 	const loadSingleToDoItem = async (id, toDoId) => {
 		try {
 			if (!authId) return;
@@ -230,6 +250,7 @@ const AppWithContext = () => {
 		}
 	};
 
+	// this useEffect will set the user for the whole application. it'll also set the initials
 	useEffect(
 		() => {
 			if (authId) {
@@ -255,6 +276,7 @@ const AppWithContext = () => {
 		[ authToken, authId ]
 	);
 
+	// this large return will provide the value(context) to the rest of the application to use
 	return (
 		<CookContext.Provider
 			value={{

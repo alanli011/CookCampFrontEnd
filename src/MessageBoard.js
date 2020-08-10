@@ -17,6 +17,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Divider from '@material-ui/core/Divider';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 
+// use material ui function to display custom styles for this component
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
@@ -60,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
+// helper function to set the breadcrumb
 const ActiveLastBreadcrumb = (props) => {
 	return (
 		<Breadcrumbs area-label="breadcrumb">
@@ -77,22 +79,30 @@ const ActiveLastBreadcrumb = (props) => {
 };
 
 const MessageBoard = () => {
+	// pull necessary variables from the context provider
 	const { authId, singleProject: project, messages, loadProjectMessages, firstInitial, lastInitial } = useContext(
 		CookContext
 	);
+
+	// grab the id from the url
 	const { id } = useParams();
+
+	// set the default state of loaded to be false
 	const [ loaded, setLoaded ] = useState(false);
 
 	useEffect(
 		() => {
+			// set the timeout for 1 second for the loading component to show up
 			setTimeout(() => {
 				setLoaded(true);
 			}, 1000);
+			// if the project is not loaded, the set the project for the context provider
 			if (!project) {
 				loadProjectMessages(id);
 			} else if (project.id !== parseInt(id, 10)) {
 				loadProjectMessages(id);
 			} else {
+				// set the title of the browser tab to be the project name
 				document.title = `${project.projectName} - Message Board`;
 			}
 		},
@@ -104,6 +114,7 @@ const MessageBoard = () => {
 
 	return (
 		<main className={classes.mainBackground}>
+			{/* if loaded is false, then display the loading component else, dispay the message/notes board */}
 			{!loaded && <Loading />}
 			{loaded && (
 				<Container maxWidth="md" className={classes.root}>
@@ -123,6 +134,7 @@ const MessageBoard = () => {
 							<Typography>All Notes</Typography>
 						</Box>
 					</section>
+					{/* map over the array of message/notes and display using material ui list component */}
 					{messages.map((message) => {
 						return (
 							<Link
