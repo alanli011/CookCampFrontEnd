@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CookContext from './CookContext';
 import homepageImage from './images/homepage-demo.png';
 
+// set style for home component using material ui styles
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		// marginTop: theme.spacing(8),
@@ -44,13 +45,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Home = () => {
+	// grab the variable needed from the context provider
 	const { authToken, authId } = useContext(CookContext);
+
+	// set the browser tab title using this useEffect
 	useEffect(() => {
 		document.title = 'CookCamp - Home';
 	}, []);
 
+	// invoking useStyles and saving it to a variable
 	const classes = useStyles();
 
+	// if a user is already logged in, it will automatically redirect the user to the projects component
 	if (authToken && authId) {
 		return <Redirect to={`/${authId}/projects`} />;
 	}
