@@ -48,24 +48,35 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Navigation = (props) => {
+	// pull necessary variables from the context provider
 	const { authToken, authId, logout, user, firstInitial, lastInitial } = useContext(CookContext);
+
+	// set the default state of the navigation
 	const [ auth, setAuth ] = useState(false);
+
+	// set the default state for the material ui dropdown
 	const [ anchorEl, setAnchorEl ] = useState(null);
+
+	// set the variable open to be a boolean based on anchorEl
 	const open = Boolean(anchorEl);
 	const classes = useStyles();
 
+	// set the state for the anchor to be the current event.currentTarget
 	const handleMenu = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
 
+	// set thhe anchorEl back to null
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
 
+	// function to handle logout and set all the states back to default
 	const handleLogOut = () => {
 		logout();
 		setAuth(false);
 		setAnchorEl(null);
+		// use react router with router to push the browser back to '/' url path
 		props.history.push('/');
 	};
 
@@ -95,7 +106,7 @@ const Navigation = (props) => {
 							<div>Home</div>
 						</Link>
 					)}
-
+					{/* if auth is true, then show the icon with the username, else should login/sign up */}
 					{auth ? (
 						<div>
 							{user.userName}
