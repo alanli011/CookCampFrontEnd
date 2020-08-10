@@ -123,6 +123,7 @@ const ToDoItem = () => {
 		}
 	};
 
+	// function to delete an item and automatically rerender through filtering all the id that doesn't match the deleted item
 	const handleDelete = async (id) => {
 		try {
 			const res = await fetch(`${baseUrl}/projects/${id}/to-do/item/${toDoId}/${id}`, {
@@ -140,6 +141,7 @@ const ToDoItem = () => {
 		}
 	};
 
+	// function to handle the check-marked state. will splice through the arrow at the current idx, by one
 	const handleCheck = async (event, idx, itemId) => {
 		let newChecked = [ ...checked ];
 		try {
@@ -185,6 +187,7 @@ const ToDoItem = () => {
 		[ toDo, id, singleToDoItem ]
 	);
 
+	// this useEffect monitors the state of the check mark for each to do item
 	useEffect(
 		() => {
 			if (singleToDoItem) {
