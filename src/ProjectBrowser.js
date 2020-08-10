@@ -141,6 +141,7 @@ const ProjectBrowser = (props) => {
 						alignItems="flex-start"
 						className={classes.gridMargin}
 					>
+						{/* if this is a new user, then set render this project screen */}
 						{projects.length === 0 && (
 							<Grid item xs={12} sm={6} md={4}>
 								<Link to={`/${authId}/projects/create-new`} className={classes.noUnderline}>
